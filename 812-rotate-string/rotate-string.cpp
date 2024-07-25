@@ -6,18 +6,8 @@ public:
         return false;
     }
 
-    std::string rotated = s;
+    string ss=s+s;
+   return ss.find(goal) != std::string::npos;
 
-    for (int i = 0; i < s.length(); ++i) {
-        // Rotate the string by one position to the left
-        rotated = rotated.substr(1) + rotated[0];
-
-        // Check if the rotated string matches the goal
-        if (rotated == goal) {
-            return true;
-        }
-    }
-
-    return false;
 }
 };
