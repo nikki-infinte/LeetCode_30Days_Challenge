@@ -1,28 +1,39 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-     if (nums.empty()) return 0; // Handle edge case for empty array
+    //optimal
 
-    sort(nums.begin(), nums.end()); // Sort the array
-    int count = 1; // Initialize count to 1 to count the first number
-    int MaxCount = 1; // Initialize MaxCount to 1
-
-    for (int i = 1; i < nums.size(); ++i) {
-        if (nums[i] == nums[i-1]) {
-            // If current number is the same as the previous one, skip it
-            continue;
-        } else if (nums[i] == nums[i-1] + 1) {
-            // If current number is consecutive, increment count
-            count++;
-        } else {
-            // If current number is not consecutive, update MaxCount and reset count
-            MaxCount = max(MaxCount, count);
-            count = 1; // Reset count for the new sequence
-        }
+    unordered_map<int,bool>mp;
+    int longest=0;
+    for(auto &n:nums)
+    {
+        mp[n]=false;
     }
 
-    MaxCount = max(MaxCount, count); // Final update for MaxCount
+        for(int n:nums)
+        {
+            int curr=1;
+            mp[n]=true;
 
-    return MaxCount;
+            //nxt
+            int nxt=n+1;
+            while(mp.find(nxt)!=mp.end()  && mp[nxt]==false)
+            {
+                curr++;
+                mp[nxt]=true;
+                nxt++;
+            }
+
+            int prev=n-1;
+            while(mp.find(prev)!=mp.end() && mp[prev]==false)
+            {
+                curr++;
+                mp[prev]=true;
+                prev--;
+            }
+
+            longest=max(longest,curr);
+        }
+        return longest;
     }
 };
