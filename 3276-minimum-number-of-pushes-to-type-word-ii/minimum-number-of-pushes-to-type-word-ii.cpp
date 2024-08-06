@@ -13,7 +13,7 @@ public:
        int minkeyPress=0;
        for(int i=25;i>=0;i--)
        {
-        int mul=0;
+        /*int mul=0;
         if(count < 8)
         {
             mul=1;
@@ -25,8 +25,10 @@ public:
         }else{
             mul=4;
         }
+        */
 
-        int val=arr[i]*mul;
+    if(arr[i]==0)break;
+        int val=arr[i]*(count/8+1);
         minkeyPress +=val;
         count++;
        }
