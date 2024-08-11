@@ -1,43 +1,36 @@
 class Solution {
 public:
-    bool isValid(int i, int j, int n, int m, vector<vector<char>>& grid) {
-    if (i >= 0 && i < n && j >= 0 && j < m && grid[i][j] == '1') {
-        return true;
-    }
-    return false;
-    }
+    int n,m;
+    void dfs(vector<vector<char>>& grid,int i,int j)
+    { if (i >= n || j >= m || i < 0 || j < 0 || grid[i][j] != '1') {
+            return;
+        }
 
-    void DFS(int i, int j, int n, int m, vector<vector<char>>& grid) {
-    grid[i][j] = '0'; // Update the cell to '0' to mark it as visited
-    if (isValid(i + 1, j, n, m, grid)) {
-        DFS(i + 1, j, n, m, grid);
+
+        grid[i][j] = '$';
+
+        // Explore all four possible directions
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
     }
-    if (isValid(i - 1, j, n, m, grid)) {
-        DFS(i - 1, j, n, m, grid);
-    }
-    if (isValid(i, j + 1, n, m, grid)) {
-        DFS(i, j + 1, n, m, grid);
-    }
-    if (isValid(i, j - 1, n, m, grid)) {
-        DFS(i, j - 1, n, m, grid);
-    }
-}
 
     int numIslands(vector<vector<char>>& grid) {
-        int n=grid.size();
-        int m=grid[0].size();
-        int count=0;
+         n=grid.size();
+         m=grid[0].size();
+        int islands=0;
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
                 if(grid[i][j]=='1')
                 {
-                    count++;
-                    DFS(i,j,n,m,grid);
+                    dfs(grid,i,j);
+                    islands++;
                 }
             }
         }
-        return count;
+        return islands;
     }
 };
