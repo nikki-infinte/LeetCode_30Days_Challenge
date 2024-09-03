@@ -1,7 +1,7 @@
 class Solution {
 public:
     int getLucky(string s, int k) {
-           string transformed = "";
+          string transformed = "";
         for (char c : s) {
             int val = (c - 'a') + 1; // Convert character to its position (1 to 26)
             transformed += to_string(val); // Append the value as a string to the transformed string
