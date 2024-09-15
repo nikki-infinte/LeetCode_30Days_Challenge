@@ -1,36 +1,51 @@
 class Solution {
 public:
-    int n,m;
-    void dfs(vector<vector<char>>& grid,int i,int j)
-    { if (i >= n || j >= m || i < 0 || j < 0 || grid[i][j] != '1') {
-            return;
+    bool isValid(vector<vector<char>>& grid,int i,int j,int n,int m)
+    {
+        if(i>=0 && i<n && j>=0 && j<m && grid[i][j]=='1')
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void numberOfIs(vector<vector<char>>& grid,int i,int j,int n,int m)
+    {
+        grid[i][j]='0';
+        if(isValid(grid,i+1,j,n,m))
+        {
+            numberOfIs(grid,i+1,j,n,m);
+        }
+          if(isValid(grid,i,j+1,n,m))
+        {
+            numberOfIs(grid,i,j+1,n,m);
+        }
+          if(isValid(grid,i-1,j,n,m))
+        {
+            numberOfIs(grid,i-1,j,n,m);
+        }
+          if(isValid(grid,i,j-1,n,m))
+        {
+            numberOfIs(grid,i,j-1,n,m);
         }
 
-
-        grid[i][j] = '$';
-
-        // Explore all four possible directions
-        dfs(grid, i + 1, j);
-        dfs(grid, i - 1, j);
-        dfs(grid, i, j + 1);
-        dfs(grid, i, j - 1);
     }
 
     int numIslands(vector<vector<char>>& grid) {
-         n=grid.size();
-         m=grid[0].size();
-        int islands=0;
+        int n=grid.size();
+        int m=grid[0].size();
+        int cnt=0;
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
                 if(grid[i][j]=='1')
                 {
-                    dfs(grid,i,j);
-                    islands++;
+                    cnt++;
+                    numberOfIs(grid,i,j,n,m);
                 }
             }
         }
-        return islands;
+        return cnt;
     }
 };
