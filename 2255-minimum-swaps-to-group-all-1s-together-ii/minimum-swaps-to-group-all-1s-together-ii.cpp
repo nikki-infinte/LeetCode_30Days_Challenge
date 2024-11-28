@@ -1,38 +1,38 @@
 class Solution {
 public:
     int minSwaps(vector<int>& nums) {
-        int n=nums.size();
-      
+        int ones = 0;
+        int n = nums.size();
 
-        // number of ones will be
-        int count=0;
-        for(int i=0;i<n;i++)
-        {
-            count+=nums[i];
+        // Count the total number of 1s
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 1) ones++;
         }
-         if (count == 0 || count == n) {
-            return 0;
-        }
-        //number of ones==count winfow is size of no of onces
 
-        int i=0;
-        int j=0;
-        int currone=0;
-        int maxcount=0;
-        while(j<2*n)
-        {
-            if(nums[j%n]==1)
-            {
-                currone++;
-            }
-            if(j-i+1 > count)
-            {
-                currone -=nums[i%n];
+        // If no 1s or all are 1s, no swaps are needed
+        if (ones == 0 || ones == n) return 0;
+
+        int min_zero = INT_MAX; // Minimum zeros (swaps needed)
+        int zero = 0;
+
+        // Sliding window on doubled array
+        int i = 0;
+        for (int j = 0; j < 2 * n; j++) {
+            
+            if (nums[j % n] == 0) zero++;
+
+            // Shrink window if it exceeds size `ones`
+            if (j - i + 1 > ones) {
+                if (nums[i % n] == 0) zero--; // Remove the element going out
                 i++;
             }
-            maxcount=max(maxcount,currone);
-            j++;
+
+            // Update the minimum zeros count when window size is `ones`
+            if (j - i + 1 == ones) {
+                min_zero = min(min_zero, zero);
+            }
         }
-        return count-maxcount;
+
+        return min_zero;
     }
 };
