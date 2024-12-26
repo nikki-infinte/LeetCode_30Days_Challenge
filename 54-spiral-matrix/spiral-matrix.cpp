@@ -1,45 +1,53 @@
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-         vector<int>ans;
-       if (matrix.empty()) return ans;  // Check for empty matrix
         
-        int top = 0, left = 0;
-        int down = matrix.size() - 1;
-        int right = matrix[0].size() - 1;
-       
+        int m=matrix.size();
+        int n=matrix[0].size();
 
-        while(top<=down && left <=right)
+    vector<int>ans;
+        int startingrow=0;
+        int endingcol=n-1;
+        int endingrow=m-1;
+        int startingcol=0;
+        int total_elem=m*n;
+    int count=0;
+
+    while(count<total_elem)
+    {
+        //starting row
+        for(int i=startingcol;i<=endingcol && count < total_elem;i++)
         {
-            for(int j=left;j<=right;j++)
-            {
-                ans.push_back(matrix[top][j]);
-            }top++;
-
-            for(int i=top;i<=down;i++)
-            {
-                ans.push_back(matrix[i][right]);
-            }
-            right--;
-
-        if(top<=down)
-        {
-            for(int i=right;i>=left;i--)
-            {
-                ans.push_back(matrix[down][i]);
-
-            }
-            down--;
+            ans.push_back(matrix[startingrow][i]);
+            count++;
         }
-        if(left <=right)
+        startingrow++;
+        //endling col
+        for(int i=startingrow;i<=endingrow && count < total_elem;i++)
         {
-            for(int i=down;i>=top;i--)
-            {
-                ans.push_back(matrix[i][left]);
-            }
-            left++;
+            ans.push_back(matrix[i][endingcol]);
+            count++;
         }
-        } 
-       return ans; 
+        endingcol--;
+
+        //ending row
+        for(int i=endingcol;i>=startingcol && count < total_elem;i--)
+        {
+            ans.push_back(matrix[endingrow][i]);
+            count++;
+        }
+        endingrow--;
+        //starting col
+        for(int i=endingrow;i>=startingrow && count < total_elem;i--)
+        {
+            ans.push_back(matrix[i][startingcol]);
+            count++;
+        }
+        startingcol++;
     }
+ return ans;
+
+
+    }
+   
 };
