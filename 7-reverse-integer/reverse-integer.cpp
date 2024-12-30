@@ -1,22 +1,20 @@
 class Solution {
 public:
     int reverse(int x) {
-         int new_num=0;
-        
-           
-            while(x)
-            {
-                int rem=x%10;
-                //overflow check under flow check
-                if((new_num > INT_MAX/10) || (new_num < INT_MIN/10))
-                {
-                    return 0;
-                }
-                new_num=new_num*10+rem;
-                x=x/10;
-            }
-
-        
-        return new_num;
+        int ans=0;
+        if(x <= INT_MIN)return 0;
+        bool neg=false;
+        if(x<0){
+            neg=true;
+            x=-x;
+        }
+        while(x>0)
+        {
+            if(ans >INT_MAX/10)return 0;
+            int rem=x%10;
+            ans=ans*10+rem;
+            x/=10;
+        }
+        return neg ?-ans :ans ;
     }
 };
