@@ -1,21 +1,24 @@
 class Solution {
 public:
-    std::vector<std::vector<int>> subsets(std::vector<int>& nums) {
-        std::vector<std::vector<int>> res;
-        std::vector<int> op;
-        solve(nums, 0, op, res);
-        return res;
-    }
-    
-    void solve(std::vector<int>& nums, int start, std::vector<int>& op, std::vector<std::vector<int>>& res) {
-        if (nums.size() == start) {
-            res.push_back(op);
+    void backtrack(int index,vector<int>&nums,vector<int>tmp,vector<vector<int>>&ans)
+    {
+        if(index==nums.size())
+        {
+            ans.push_back(tmp);
             return;
         }
+
         
-        solve(nums, start + 1, op, res);
-        op.push_back(nums[start]);
-        solve(nums, start + 1, op, res);
-        op.pop_back();
+        //exclude
+          backtrack(index+1,nums,tmp,ans);
+        //include
+        tmp.push_back(nums[index]);
+        backtrack(index+1,nums,tmp,ans);
     }
-};;
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>>ans;
+        vector<int>tmp;
+        backtrack(0,nums,tmp,ans);
+        return ans;
+    }
+};
