@@ -1,63 +1,65 @@
 class Solution {
 public:
-    int n,m;
-
     int orangesRotting(vector<vector<int>>& grid) {
-        n=grid.size();
-        m=grid[0].size();
-        int fresh=0;
+        
+        int m=grid.size();
+        int n=grid[0].size();
+
         queue<pair<int,int>>q;
-        for(int i=0;i<n;i++)
+        int z_cnt=0;
+
+        for(int i=0;i<m;i++)
         {
-            for(int j=0;j<m;j++)
+            for(int j=0;j<n;j++)
             {
                 if(grid[i][j]==2)
                 {
-                    q.push({i,j});
-                }else if(grid[i][j]==1)fresh++;
-            }
-        }
-
-        if(fresh==0)return 0;
-
-        //bfs
-      int time=0;
-       int directions[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        while(!q.empty())
-        {
-
-            int size=q.size();
-            bool rottedThisMin=false;
-            for(int i=0;i<size;i++)
-          { 
-            auto [x,y]=q.front();
-            q.pop();
-            
-            for(int d=0;d<4;d++)
-            {
-                int newx=x+directions[d][0];
-                int newy=y+directions[d][1];
-
-                //check bounds and if orange can be rotted
-
-                if(newx >=0 && newx<n && newy>=0 && newy <m && grid[newx][newy]==1)
+                    q.push(make_pair(i,j));
+                }else if(grid[i][j]==0)
                 {
-                    grid[newx][newy]=2;
-                    q.push({newx,newy});
-                    fresh--;
-                    rottedThisMin=true;
+                    z_cnt++;
                 }
             }
-
-        
-          }
-            if(rottedThisMin)time++;
         }
-
-        //unreached
-          for(int i=0;i<n;i++)
+        if(z_cnt==n*m)
         {
-            for(int j=0;j<m;j++)
+            return 0;
+        }
+        int timer=0;
+        int row[4]={1,-1,0,0};
+        int col[4]={0,0,-1,1};
+        while(!q.empty())
+        {
+            int curr_size=q.size();
+            timer++;
+            while(curr_size--)
+            {
+                int i=q.front().first;
+                int j=q.front().second;
+                q.pop();
+                
+                for(int k=0;k<4;k++)
+                {
+                    int new_i=i+row[k];
+                    int new_j=j+col[k];
+
+                   if (new_i >= 0 && new_j >= 0 && new_i < m && new_j < n)
+                    {
+                        if(grid[new_i][new_j]==1)
+                        {
+                            q.push(make_pair(new_i,new_j));
+                            grid[new_i][new_j]=2;
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
             {
                 if(grid[i][j]==1)
                 {
@@ -65,6 +67,6 @@ public:
                 }
             }
         }
-       return time;
+        return timer-1;
     }
 };
