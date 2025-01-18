@@ -1,42 +1,41 @@
 class Solution {
 public:
+     int ceil_value(vector<int>& arr, int target) {
+        int low = 0, high = arr.size() - 1;
+        int ceil = -1;  // Initialize to -1 for invalid case
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] >= target) {
+                ceil = mid;
+                high = mid - 1;  // Search in the left half
+            } else {
+                low = mid + 1;  // Search in the right half
+            }
+        }
+        return ceil;
+    }
+
+    int floor_value(vector<int>& arr, int target) {
+        int low = 0, high = arr.size() - 1;
+        int floor = -1;  // Initialize to -1 for invalid case
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] <= target) {
+                floor = mid;
+                low = mid + 1;  // Search in the right half
+            } else {
+                high = mid - 1;  // Search in the left half
+            }
+        }
+        return floor;
+    }
+
     vector<int> searchRange(vector<int>& nums, int target) {
-          vector<int> ans;
-        int index1 = -1, index2 = -1;
-        int n = nums.size();
-        int start = 0, end = n-1, mid;
-        mid = start + (end-start)/2;
-
-        //finding first occurance
-        while(start <= end){
-            if(target == nums[mid]){
-                index1 = mid;
-                end = mid-1;
-            }
-            else if(target < nums[mid]){
-                end = mid-1;
-            }
-            else start = mid+1;
-            mid = start + (end-start)/2;
+        int f=floor_value(nums,target);
+        int c=ceil_value(nums,target);
+          if (f == -1 || c == -1 || nums[f] != target || nums[c] != target) {
+            return {-1, -1};  // Target not found
         }
-         start = 0; end = n-1; mid = start + (end-start)/2;
-
-        //finding last occurance 
-        while(start <= end){
-            if(target == nums[mid]){
-                index2 = mid;
-                start = mid+1;
-            }
-            else if(target < nums[mid]){
-                end = mid-1;
-            }
-            else start = mid+1;
-            mid = start + (end-start)/2;
-        }
-
-        ans.push_back(index1);
-        ans.push_back(index2);
-        return ans;
-    
+        return {c,f};
     }
 };
