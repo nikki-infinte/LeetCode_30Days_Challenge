@@ -1,30 +1,19 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        
-        //approach 1:
-        priority_queue<pair<int,char>>pq;
-        unordered_map<char,int>umap;
-        for(int i=0;i<s.size();i++)
-        {
-           umap[s[i]]++;
-        }
+      
+         unordered_map<char,int> mp;
+        multimap<int,char> r;
+        string ss="";
 
-        for(auto a:umap)
-        {
-            pq.push({a.second,a.first});
-        }
-        string ans="";
-        while(!pq.empty())
-        {
-            int times=pq.top().first;
-            int chara=pq.top().second;
-            pq.pop();
-            while(times--)
-            {
-                ans.push_back(chara);
-            }
-        }
-        return ans;
+        for(auto a : s)
+            mp[a]++;
+
+        for(auto a : mp)
+            r.insert({a.second, a.first});
+        for(auto it = r.rbegin(); it != r.rend(); ++it)
+            ss += string(it->first, it->second);
+        return ss;
+     
     }
 };
