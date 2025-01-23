@@ -1,29 +1,26 @@
 class Solution {
 public:
 
-    double pow(double x, int n)
+    double pow_fun(double x,long long n1)
     {
-        if(n==0)
-        return 1;
-        if(n==1)
-        return x;
-
-        double ans = double(pow(x,n/2));
-        if(n%2 == 0)
+        if(n1==0)
         {
-            double ans2 = double(ans*ans);
-            return ans2;
-        } 
-        else
+            return 1;
+        }
+        if(n1 % 2==0)
         {
-            double ans2 = double(x*ans*ans);
+           return pow_fun(x*x,n1/2);
+        }else{
+           double ans2 = x * pow_fun(x, n1 - 1);
             return ans2;
         }
     }
     double myPow(double x, int n) {
-        double ans1 = pow(x,n);
-        if(n<0)
-        ans1 = 1/ans1;
-        return ans1;
+        long long n1=n;
+        if (n < 0) {
+            return 1 / pow_fun(x, -n1); // Handle negative exponents
+        } else {
+            return pow_fun(x, n1);
+        }
     }
 };
