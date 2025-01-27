@@ -10,15 +10,25 @@ public:
 
         while(low<=high)
         {
-
-            if(people[low] + people[high] <=limit)
+            if (low == high) {
+                // One person left; needs a separate boat
+                cnt++;
+                break;
+            }
+           
+            int sum = people[low] +people[high];
+            if(sum <= limit)
             {
                 low++;
+                high--;
+                  cnt++;
+            }else{
+                high--;
+                cnt++;
             }
-            high--;
-            cnt++;
+            
         }
-       
+      
         return cnt;
     }
 };
