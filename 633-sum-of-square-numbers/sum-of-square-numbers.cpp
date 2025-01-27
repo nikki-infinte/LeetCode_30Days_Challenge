@@ -1,26 +1,21 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
+        if (c == 1 || c == 0) return true;  // Base cases
+        
+        long long low = 0;  // Use long long to avoid overflow
+        long long high = static_cast<long long>(sqrt(c));  // Highest possible value for a square
 
-        if(c < 0) return false;
-
-        long i=0;
-        long j=(int)sqrt(c);
-
-        while(i<=j)
-        {
-            long sum=i*i+j*j;
-            if(sum==c)
-            {
-                return true;
-            }
-            else if(sum <c)
-            {
-                i++;
-            }else{
-                j--;
+        while (low <= high) {
+            long long sum = (low * low) + (high * high);  // Calculate the sum of squares
+            if (sum == c) {
+                return true;  // Found a pair
+            } else if (sum > c) {
+                high--;  // Decrease the larger number
+            } else {
+                low++;  // Increase the smaller number
             }
         }
-        return false;
+        return false;  // No valid pair found
     }
 };
