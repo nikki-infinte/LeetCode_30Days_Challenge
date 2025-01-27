@@ -1,24 +1,23 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
-        int i=0;
-        int j=numbers.size()-1;
-        vector<int>vec;
-        while(i<j)
+        
+        //using two pointer appraoch 
+
+        int low=0;
+        int high=numbers.size()-1;
+        while(low<high)
         {
-            int des=numbers[i]+numbers[j];
-            if(des > target)
+            if(numbers[low] + numbers[high] == target)
             {
-                j--;
-            }else if(des < target)
+                return {low+1,high+1};
+            }else if(numbers[low]+ numbers[high] > target)
             {
-                i++;
+                high--;
             }else{
-                vec.push_back(i+1);
-                vec.push_back(j+1);
-                return vec;
+                low++;
             }
         }
-       return vec;
+        return {-1,-1};
     }
 };
