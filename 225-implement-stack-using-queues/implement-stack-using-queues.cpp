@@ -1,26 +1,35 @@
 class MyStack {
 public:
-    deque<int>q;
+    //using two stack 
+
+    queue<int> q1,q2;
     MyStack() {
         
     }
     
     void push(int x) {
-        q.push_back(x);
+        q2.push(x);
+        while(!q1.empty())
+        {
+            q2.push(q1.front());
+            q1.pop();
+        }
+        swap(q1,q2);
     }
     
     int pop() {
-        int t =q.back();
-        q.pop_back();
-        return t;
+        
+        int ans = q1.front();
+        q1.pop();
+        return ans;
     }
     
     int top() {
-        return q.back();
+        return q1.front();
     }
     
     bool empty() {
-        return (q.empty());
+        return q1.empty();
     }
 };
 
