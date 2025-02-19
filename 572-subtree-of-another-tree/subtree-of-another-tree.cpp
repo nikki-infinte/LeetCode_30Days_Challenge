@@ -11,20 +11,29 @@
  */
 class Solution {
 public:
-  // Function to check if two trees are identical
-    bool isSameTree(TreeNode* t1, TreeNode* t2) {
-        if (t1 == nullptr && t2 == nullptr) return true;
-        if (t1 == nullptr || t2 == nullptr) return false;
-        return (t1->val == t2->val) &&
-               isSameTree(t1->left, t2->left) &&
-               isSameTree(t1->right, t2->right);
-    }
+    bool isIdentical(TreeNode* root ,TreeNode* subroot)
+    {
+        if(root == NULL && subroot == NULL)return true;
+        else if( root == NULL || subroot == NULL ||root->val !=subroot->val)return false;
 
-   bool isSubtree(TreeNode* root, TreeNode* subRoot) {
-        if (root == nullptr) return false;
-        // Check if the current tree rooted at 'root' is identical to 'subRoot'
-        if (isSameTree(root, subRoot)) return true;
-        // Recur for left and right subtrees
-        return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+
+        if(! isIdentical(root->left , subroot->left))return false;
+        if( ! isIdentical(root->right , subroot->right )) return false;
+
+
+        return true;
+    }
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+       if(root == NULL)return false;
+        //dfs preorder
+        if(root->val == subRoot->val)
+        {
+           if(isIdentical(root,subRoot))return true;
+
+        }
+       bool l =isSubtree(root->left , subRoot);
+       bool r =isSubtree(root->right , subRoot);
+       return l || r;
+
     }
 };
