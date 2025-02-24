@@ -1,28 +1,25 @@
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-        
 
-        //using two pointer approach
 
-        int left=0,right=nums.size()-1;
-        vector<int>ans(right+1,0);
-        int k=ans.size()-1;
-     
-        
-        for(int k=ans.size()-1;k>=0;k--)
+        int n = nums.size();
+        vector<int>ans(n,0);
+
+
+        int low=0;
+        int right =n-1;
+        for(int k = n-1;k>=0;k--)
         {
-            if(abs(nums[left]) > abs(nums[right]))
+            if(abs( nums[low]) > abs(nums[right]))
             {
-                ans[k]=nums[left]*nums[left];
-                left++;
+                ans[k] = nums[low]*nums[low];
+                low++;
             }else{
-                ans[k]=nums[right]*nums[right];
+                ans[k] = nums[right] * nums[right];
                 right--;
             }
         }
         return ans;
-
-
     }
 };
