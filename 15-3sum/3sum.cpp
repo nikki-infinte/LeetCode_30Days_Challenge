@@ -1,32 +1,37 @@
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        
-        int n=nums.size();
-        vector<vector<int>>output;
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<n-1;i++)
+    vector<vector<int>> threeSum(vector<int>& arr) {
+
+        vector<vector<int>>ans;
+        int n=arr.size();
+        sort(arr.begin(),arr.end());
+
+        for(int i=0;i<n;i++)
         {
-            int low=i+1;
-            int high=n-1;
-            while(low<high)
+            if(i != 0 && arr[i] == arr[i-1])continue;
+
+
+            int j=i+1;
+            int k = n-1;
+
+            while( j< k)
             {
-                if(nums[i] + nums [low] + nums[high] < 0)
-                {
-                    low++;
-                }else if(nums[i] + nums [low] + nums[high] > 0)
-                {
-                    high--;
-                }else {
-                    output.push_back({ nums[i] , nums [low] , nums[high] });
-                    int tmpIndex1 = low;
-                    int tmpIndex2 =high ;
-                      while(low < high && nums[low] == nums[tmpIndex1]) low++;
-                      while(low < high && nums[high] == nums[tmpIndex2]) high--;
+                int sum = arr[i] + arr[j] +arr[k];
+                if(sum < 0)j++;
+                else if( sum > 0)k--;
+                else{
+                    vector<int>tmp={arr[i] ,arr[j] ,arr[k]};
+                    ans.push_back(tmp);
+                    j++;
+                    k--;
+
+                    while( j < k && arr[j] == arr[j-1])j++;
+                    while( j < k && arr[k] == arr[k+1])k--;
                 }
             }
-            while(i+1 < n && nums[i] == nums[i+1]) i++;
         }
-        return output;
+
+        return ans;
+        
     }
 };
