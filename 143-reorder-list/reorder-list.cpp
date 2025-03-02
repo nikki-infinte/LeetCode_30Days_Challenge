@@ -10,38 +10,56 @@
  */
 class Solution {
 public:
+    ListNode* Reverse(ListNode* node)
+    {
+        ListNode* prev=NULL;
+        ListNode* curr = node;
+        ListNode* nxt = NULL;
+
+        while( curr != NULL)
+        {
+            nxt = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = nxt ;
+        }
+        return prev;
+    } 
     void reorderList(ListNode* head) {
+        
+        if(!head || !(head->next) || !(head->next->next) )return ;
 
-      //brute  force 
+        //step  1 find mid point 
 
-      vector<int>tmp;
-      ListNode* b = head;
-      while(b!=NULL)
-      {
-        tmp.push_back(b->val); 
-        b=b->next;
-      }
+        ListNode* slow = head;
+        ListNode* fast = head;
 
-     
+        while(fast->next && fast->next->next)
+        {
+            slow = slow ->next;
+            fast = fast->next->next;
+        }
 
-     ListNode* curr =head;
-      int i=0,j=tmp.size()-1;
+        ListNode* mid =slow->next;
+          slow->next = NULL;
+        ListNode* lastptr =Reverse(mid);
+        ListNode* firstptr = head ;
 
-      while(i < j)
-      {
-        curr ->val =tmp[i];
-        curr = curr->next;
-        curr->val = tmp[j];
-        curr =curr ->next;
-        i++;
-        j--;
-      }
-      if( i== j)curr->val = tmp[i];
-     
+        while( lastptr )
+        {
+            ListNode* temp1 = firstptr ->next;
+            ListNode* temp2 = lastptr ->next ;
+
+            firstptr->next = lastptr ; 
+            lastptr->next =temp1;
+
+            firstptr = temp1;
+            lastptr = temp2;
+
+        }
+
+       
+
 
     }
-
-
-
-   
 };
