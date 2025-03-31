@@ -2,52 +2,46 @@ class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
         
-        int m=matrix.size();
-        int n=matrix[0].size();
 
-    vector<int>ans;
-        int startingrow=0;
-        int endingcol=n-1;
-        int endingrow=m-1;
-        int startingcol=0;
-        int total_elem=m*n;
-    int count=0;
+        int top =0,left=0;
+        int bottom = matrix.size()-1;
+        int right=matrix[0].size()-1;
+        vector<int>ans;
+        while(left <= right && top<=bottom)
+        {
+            
+            //go left to right
 
-    while(count<total_elem)
-    {
-        //starting row
-        for(int i=startingcol;i<=endingcol && count < total_elem;i++)
-        {
-            ans.push_back(matrix[startingrow][i]);
-            count++;
-        }
-        startingrow++;
-        //endling col
-        for(int i=startingrow;i<=endingrow && count < total_elem;i++)
-        {
-            ans.push_back(matrix[i][endingcol]);
-            count++;
-        }
-        endingcol--;
+            for(int i=left;i<=right;i++)
+            {
+             ans.push_back(matrix[top][i]);   
+            }
+            top++;
 
-        //ending row
-        for(int i=endingcol;i>=startingcol && count < total_elem;i--)
-        {
-            ans.push_back(matrix[endingrow][i]);
-            count++;
+            // top to bottom
+            for(int k = top ;k<=bottom ;k++)
+            {
+                ans.push_back(matrix[k][right]);
+            }
+            right--;
+
+            //right to left
+            if(top<=bottom){
+                for(int p=right;p>=left;p--)
+                {
+                    ans.push_back(matrix[bottom][p]);
+                }
+                bottom--;
+            }
+
+            if(left <= right){
+                for(int k = bottom ; k >= top ;k--)
+                {
+                    ans.push_back(matrix[k][left]);
+                }
+                left ++;
+            }
         }
-        endingrow--;
-        //starting col
-        for(int i=endingrow;i>=startingrow && count < total_elem;i--)
-        {
-            ans.push_back(matrix[i][startingcol]);
-            count++;
-        }
-        startingcol++;
+        return ans;
     }
- return ans;
-
-
-    }
-   
 };
