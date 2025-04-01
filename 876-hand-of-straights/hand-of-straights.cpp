@@ -1,30 +1,51 @@
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
-        if(hand.size() % groupSize!=0)return false;
+         if (hand.size() % groupSize != 0) return false; // Ensure valid division
 
-        map<int,int> mp;
+        priority_queue<int, vector<int>, greater<int>> pq;
 
-        for(int x :hand)
-        {
-            mp[x]++;
+        // Push all elements into the min-heap
+        for (int num : hand) {
+            pq.push(num);
         }
-        while(!mp.empty())
-        {
-            int curr=mp.begin()->first;
-        for(int i=0;i<groupSize;i++)
-        {
-            if(mp[curr+i]==0)
-            {
-                return false;
+
+        while (!pq.empty()) {
+            int t = 0;
+            int prev = -1;
+            vector<int> tmp; // Store duplicates to push back
+
+            while (t < groupSize) {
+                if (pq.empty()) return false; // Not enough elements left
+
+                int x = pq.top();
+                pq.pop();
+
+                if (t == 0) {
+                    prev = x; // First element of the group
+                } else {
+                    if (x != prev + 1) { 
+                        if (x == prev) {
+                            tmp.push_back(x);
+                            t--;
+                             // Store another duplicate
+                        } else {
+                            return false; // Sequence break
+                        }
+                    }
+                }
+
+                prev = x;
+                t++;
             }
-            mp[curr+i]--;
 
-            if(mp[curr+i] < 1){
-                mp.erase(curr+i);
+            // Push back duplicates that were not used
+            for (int val : tmp) {
+                pq.push(val);
             }
         }
-        }
+
         return true;
+    
     }
 };
