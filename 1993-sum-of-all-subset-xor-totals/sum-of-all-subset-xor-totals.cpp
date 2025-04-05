@@ -1,35 +1,34 @@
 class Solution {
 public:
 
-    void AllPossibleSubset(vector<int>nums,vector<int>curr,vector<vector<int>>&ans,int i)
+    void generateSubset(vector<int>&nums,int indx,vector<vector<int>>&res,vector<int>tmp)
     {
-        if(i==nums.size())
+        if(indx >= nums.size())
         {
-            ans.push_back(curr);
+            res.push_back(tmp);
             return ;
         }
-        curr.push_back(nums[i]);
-        AllPossibleSubset(nums,curr,ans,i+1);
-        curr.pop_back();
-        AllPossibleSubset(nums,curr,ans,i+1);
 
+        tmp.push_back(nums[indx]);
+        generateSubset(nums,indx+1,res,tmp);
 
+        tmp.pop_back();
+        generateSubset(nums,indx+1,res,tmp);
     }
     int subsetXORSum(vector<int>& nums) {
-        vector<vector<int>> ans;
-        vector<int>curr;
-        AllPossibleSubset(nums,curr,ans,0);
+        vector<vector<int>>res;
+        vector<int>tmp;
+        generateSubset(nums,0,res,tmp);
 
-        int res=0;
-        for(vector<int> subset:ans)
-        {
-            int Xor=0;
-            for(int a:subset)
-            {
-                Xor^=a;
-            }
-            res+=Xor;
+        int ans = 0;
+        
+    for (int i = 0; i < res.size(); i++) { // iterate over all subsets
+        int subsetXor = 0;
+        for (int j = 0; j < res[i].size(); j++) {
+            subsetXor ^= res[i][j]; // XOR each element of the subset
         }
-        return res;
+        ans += subsetXor;
+    }
+        return ans;
     }
 };
