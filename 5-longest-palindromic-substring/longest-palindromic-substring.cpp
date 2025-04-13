@@ -1,35 +1,53 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        if(s.length() <= 1)
+        
+        if(s.empty())return "";
+
+    // step 1 : transform string
+        string t = "#";
+        for(char c: s)
         {
-            return s;
+            t+=c;
+            t+="#";
         }
 
-        auto expand_from_centre = [&] (int left ,int right)
-        {
-            while(left >= 0 && right < s.length() && s[left] == s[right] ){
-                left--;
-                right++;
-            }
-            return s.substr(left+1 ,right-left-1);
-        };
+        int n = t.size();
+        vector<int>P(n,0);
 
+        int center = 0,right =0;
+        int maxlen =0 ,centreIndx =0;
 
-        string max_str=s.substr(0,1);
-        for(int i=0;i<s.length()-1 ;i++)
-        {
-            string odd= expand_from_centre(i,i);
-            string even = expand_from_centre(i,i+1);
-            if(odd.length() > max_str.length())
-            {
-                max_str = odd;
-            }
-             if(even.length() > max_str.length())
-            {
-                max_str = even;
-            }
+       
+    for (int i = 0; i < n; ++i) {
+        int mirror = 2 * center - i;
+
+        if (i < right)
+            P[i] = min(right - i, P[mirror]);
+
+        // Try to expand around center i
+        int a = i + P[i] + 1;
+        int b = i - P[i] - 1;
+        while (a < n && b >= 0 && t[a] == t[b]) {
+            P[i]++;
+            a++;
+            b--;
         }
-        return max_str;
+
+        // Update center and right boundary
+        if (i + P[i] > right) {
+            center = i;
+            right = i + P[i];
+        }
+
+        // Track max length and its center
+        if (P[i] > maxlen) {
+            maxlen = P[i];
+            centreIndx = i;
+        }
+    }
+      // Step 3: Extract original substring
+    int start = (centreIndx - maxlen) / 2;
+    return s.substr(start, maxlen);
     }
 };
