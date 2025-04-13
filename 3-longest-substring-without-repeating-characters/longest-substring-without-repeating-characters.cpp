@@ -2,25 +2,24 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         
-        //using substring sliding window
-        int i=0;
-        int j=0;
+        int i=0,j=0;
+        int n = s.length();
+        int maxlen = 0;
         unordered_map<char,int>umap;
-        int largest=0;
-        while(j<s.length())
+        while( j < n )
         {
-            umap[s[j]]++;
-            while(umap[s[j]] > 1 )
+            
+            umap[s[j]] ++ ;
+            while(umap[s[j]] > 1 && i<j)
             {
                
                 umap[s[i]]--;
                 i++;
-                 
             }
-            largest=max(largest,j-i+1);
+
+            maxlen = max(j-i+1 , maxlen);
             j++;
         }
-        
-        return largest;
+        return maxlen;
     }
 };
