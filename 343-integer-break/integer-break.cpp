@@ -1,21 +1,24 @@
 class Solution {
 public:
-    int integerBreak(int n) {
-        
-     //recursive relation of this is
-    // integerBreak(n-breaki)*integerBreak(rem);
 
+    int solve(int n,vector<int>&dp)
+    {
+        if(n==1)return 1;
 
-        vector<int>dp(n+1,0);
-        dp[1] = 1;
-        for(int i=2;i<=n;i++)
+        int res = INT_MIN;
+        if(dp[n]!=-1)
         {
-            for(int j = 1 ;j<i;j++)
-            {
-                dp[i] = max(dp[i] , max(j*(i-j) , j*dp[i-j]));
-            }
+            return dp[n];
         }
-        return dp[n];
+        for(int i=1;i<=n-i;i++)
+        {
+            int prod = i*max(n-i,solve(n-i,dp));
+            res = max(prod,res);
+        }
+        return dp[n] = res;
     }
-    
+    int integerBreak(int n) {
+        vector<int>dp(n+1,-1);
+        return solve(n,dp);
+    }
 };
