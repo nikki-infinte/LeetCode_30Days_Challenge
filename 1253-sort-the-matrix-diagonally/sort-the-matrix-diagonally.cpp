@@ -10,11 +10,15 @@ public:
             for(int j=0;j<m;j++)
             {
                 umap[i-j].push_back(mat[i][j]);
-                sort(umap[i-j].begin(),umap[i-j].end());
+                
             }
         }
 
-       
+        for(auto& a:umap)
+        {
+            sort(a.second.begin(),a.second.end());
+        }
+
         for(int i=n-1 ; i>=0;i--){
             for(int j=m-1 ; j >=0 ;j--)
             {
