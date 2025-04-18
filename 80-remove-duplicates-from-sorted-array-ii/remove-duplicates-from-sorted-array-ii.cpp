@@ -2,44 +2,19 @@ class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         
-        //brute force
         int n = nums.size();
-        map<int,int>mp;
-        for(int i=0;i<n;i++)
+        if(nums.size() < 2)return nums.size();
+        int k =2,i = 2;
+        while ( i < n )
         {
-            mp[nums[i]]++;
-        }
-
-        vector<int>tmp;
-        for(auto a:mp)
-        {
-            if(a.second >= 2){
-                tmp.push_back(a.first);
-                tmp.push_back(a.first);
-
-                a.second = a.second -2;
-               
-            }
-            else if(a.second == 1)
+            if(nums[k-2] != nums[i])
             {
-                tmp.push_back(a.first);
-                a.second = a.second -2;
-               
+                nums[k] = nums[i];
+                k++;
             }
+            i++;
         }
+        return k;
 
-        int ans =tmp.size();
-       for(auto a:mp)
-       {
-        int i= a.second;
-        while(i--)
-        {
-            tmp.push_back(a.first);
-        }
-        
-       }
-
-       nums = tmp;
-        return ans;
     }
 };
