@@ -1,33 +1,27 @@
 class Solution {
 public:
 
-    string countHere(string s , int times)
+    string nextNum(string s)
     {
-        if(times == 0 )
+        string res;
+        for(int i=0;i<s.length();i++)
         {
-            return s;
-        }
-
-        int i=0;
-       
-        string new_str="";
-        while(i< s.length())
-        {
-             int count=1;
-            while( i+1 <s.length() &&s[i]==s[i+1] )
+            int cnt =1;
+            while( i+1 < s.size() && s[i] == s[i+1])
             {
-                count++;
-                i++;
+                ++i,++cnt;
             }
-           new_str += to_string(count) + s[i]; // Append count and character
-            i++;
-          
+            res += to_string(cnt) + s[i];
         }
-         
-
-        return countHere(new_str , times-1);
+        return res;
     }
     string countAndSay(int n) {
-       return  countHere("1",n-1);
+        
+        string tmp = "1";
+        for(int i=1;i<n;i++)
+        {
+            tmp = nextNum(tmp);
+        }
+        return tmp;
     }
 };
