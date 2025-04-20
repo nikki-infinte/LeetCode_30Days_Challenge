@@ -1,36 +1,34 @@
 class Solution {
 public:
     string reverseWords(string s) {
-          stack<string> st;
-        string res = "";
-        string word = "";
-
-        // Traverse the string and push words to the stack
-        for (int i = 0; i < s.length(); i++) {
-            if (s[i] == ' ') {
-                if (!word.empty()) {
-                    st.push(word);
-                    word = "";
-                }
-            } else {
-                word += s[i];
+        
+        string output="";
+        stack<string>st;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]!=' ')
+            {
+                output+=s[i];
+            }
+            else if (!output.empty()){
+                st.push(output);
+                output="";
             }
         }
-
-        // Push the last word to the stack if it exists
-        if (!word.empty()) {
-            st.push(word);
+        if(!output.empty()){
+            st.push(output);
         }
 
-        // Pop words from the stack and append them to the result
-        while (!st.empty()) {
-            res += st.top();
+        string ans ="";
+        while(!st.empty())
+        {
+            string tmp =st.top();
             st.pop();
-            if (!st.empty()) {
-                res += " ";
-            }
+            ans+=tmp;
+           if(!st.empty()) ans+=" ";
         }
+    
+        return ans;
 
-        return res;
     }
 };
