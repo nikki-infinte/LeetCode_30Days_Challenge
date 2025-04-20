@@ -1,32 +1,43 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
-         vector<pair<int,int>>vec;
-        for(int i=0;i<matrix.size();i++)
+       queue<pair<int,int>>q;
+
+       int n=matrix.size();
+       int m = matrix[0].size();
+
+       for(int i=0;i<n;i++)
+       {
+        for(int j=0;j<m;j++)
         {
-            for(int j=0;j<matrix[0].size();j++)
+            if(matrix[i][j] == 0)
             {
-                if(matrix[i][j]==0)
-                {
-                    vec.push_back({i,j});
-                }
+                q.push({i,j});
             }
         }
+       } 
 
-      for(int i=0;i<vec.size();i++)
-      {
-        int row=vec[i].first;
-        int col=vec[i].second;
-        for(int j=0;j<matrix[0].size();j++)
-        {
-            matrix[row][j]=0;
-        }
 
-        for(int j=0;j<matrix.size();j++)
-        {
-            matrix[j][col]=0;
-        }
-      }
-     
+       while(!q.empty())
+       {
+        auto p =q.front();
+        q.pop();
+        
+        int x = p.first;
+        int y= p.second;
+        
+            for(int i=0;i<n;i++)
+            {
+                //colum wise
+                matrix[i][y]=0;
+            }
+            for(int i=0;i<m;i++)
+            {
+                //row wise
+                matrix[x][i] =0;
+            }
+
+
+       }
     }
 };
