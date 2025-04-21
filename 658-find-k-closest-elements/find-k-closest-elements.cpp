@@ -2,23 +2,20 @@ class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         
-        //create maxheap to remove which has highest diffeence
-        priority_queue<pair<int,int>>maxheap;
-        for(int i=0;i<arr.size();i++)
-        {
-            maxheap.push({abs(arr[i]-x),arr[i]});
+        int n = arr.size();
+        priority_queue<pair<int,int> , vector<pair<int,int>> ,greater<pair<int,int>> > min_heap;
 
-            if(maxheap.size()>k)
-            {
-                maxheap.pop();
-            }
-        }
-        vector<int>ans;
-        while(!maxheap.empty())
+        for(int i=0;i<n;i++)
         {
-            auto elem=maxheap.top();
-            ans.push_back(elem.second);
-            maxheap.pop();
+            min_heap.push({abs(arr[i] - x),i});
+        }
+
+        vector<int>ans;
+        for(int i=0;i<k;i++)
+        {
+            int c = min_heap.top().second;
+            min_heap.pop();
+            ans.push_back(arr[c]);
         }
         sort(ans.begin(),ans.end());
         return ans;
