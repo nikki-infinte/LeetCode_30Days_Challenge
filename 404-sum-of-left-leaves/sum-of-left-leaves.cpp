@@ -12,31 +12,21 @@
 class Solution {
 public:
 
-    int sum(TreeNode* root,TreeNode* parent)
+    void sum(TreeNode* root,int &ans)
     {
-        if(root==NULL)
-        {
-            return 0;
-        }
-
-        if(root->left==NULL && root->right==NULL)
-        {
-            if(parent!=NULL)
-            {
-                if(parent->left==root)
-                {
-                    return root->val;
-                }
-            }
-        }
-        
-        int ans = sum(root->left,root);
-         ans +=sum(root->right,root);
-
-        return ans;
+            if (root == NULL) return;
+        if (root->left && root->left->left == NULL && root->left->right == NULL) {
+        ans += root->left->val;
     }
+
+    sum(root->left, ans);
+    sum(root->right, ans);
+
+    }
+
     int sumOfLeftLeaves(TreeNode* root) {
-        int res=sum(root,NULL);
-        return res;
+        int ans=0;
+        sum(root,ans);
+        return ans;
     }
 };
