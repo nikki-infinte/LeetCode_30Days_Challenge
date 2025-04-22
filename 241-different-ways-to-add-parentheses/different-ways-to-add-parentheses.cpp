@@ -1,45 +1,35 @@
 class Solution {
 public:
-vector<int>solve(string s)
-{
-    vector<int>res;
-    for(int i=0;i<s.length();i++)
-    {
-        if(s[i]=='+' || s[i]=='-' || s[i]=='*')
+ // function to get the result of the operation
+    int perform(int x, int y, char op) {
+        if(op == '+') return x + y;
+        if(op == '-') return x - y;
+        if(op == '*') return x * y;
+        return 0;
+    }
+    vector<int> diffWaysToCompute(string exp) {
+        
+        vector<int> results;
+        for(int i=0;i<exp.size();i++)
         {
-            vector<int>left_res=solve(s.substr(0,i));
-            vector<int>right_res=solve(s.substr(i+1));
-
-
-            for(int & x:left_res)
+            if(exp[i] == '+' || exp[i] =='-' || exp[i]=='*')
             {
-                for(int &y:right_res)
-                {
-                    if(s[i]=='+')
-                    {
-                        res.push_back(x+y);
-                    }else if(s[i]=='-')
-                    {
-                        res.push_back(x-y);
-                    }
-                    else if(s[i]=='*')
-                    {
-                        res.push_back(x*y);
+                vector<int> left = diffWaysToCompute(exp.substr(0, i));
+                
+                // list of second operands
+                vector<int> right = diffWaysToCompute(exp.substr(i + 1));
+                 for(int x : left) {
+                    for(int y : right) {
+                        int val = perform(x, y, exp[i]);
+                        results.push_back(val);
                     }
                 }
             }
         }
-    }
 
-    if(res.empty())
-    {
-        res.push_back(stoi(s));
-    }
-
-    return res;
-
-}
-    vector<int> diffWaysToCompute(string expression) {
-        return solve(expression);
+        if(results.empty()){
+            results.push_back(stoi(exp));
+        }
+        return results;
     }
 };
