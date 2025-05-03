@@ -3,28 +3,27 @@ public:
     int countWords(vector<string>& words1, vector<string>& words2) {
         
         unordered_map<string,int>umap;
-        set<string>st;
+        unordered_map<string,int>umap2;
+
         for(auto a:words1)
         {
             umap[a]++;
-            st.insert(a);
-          
         }
+
         for(auto b:words2)
         {
-            umap[b]++;
-
+            umap2[b]++;
         }
-        int ans =0;
-        for(int i=0;i<words2.size();i++)
-        {
-            if(st.find(words2[i]) !=st.end())
-            {
-                if(umap[words2[i]] == 2)ans++;
+       
+       int ans = 0;
+        for (auto& [word, count] : umap) {
+            if (count == 1 && umap2[word] == 1) {
+                ans++;
             }
         }
-return ans;
+        return ans;
 
-        
+
+
     }
 };
