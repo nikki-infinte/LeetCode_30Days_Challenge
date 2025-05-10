@@ -1,26 +1,25 @@
 class Solution {
 public:
 
-    void backtrack(string &digits , int indx , string &curr,unordered_map<int,string>&umap,vector<string>&res)
+    void generate(vector<string>&res , string& digits ,string curr,int indx,unordered_map<int,string>umap)
     {
-        if(indx == digits.size())
+        if(indx >= digits.size())
         {
             res.push_back(curr);
             return ;
         }
 
-
-        string letters  = umap[digits[indx]-'0'];
-        for(char c: letters)
+        string letter = umap[digits[indx]-'0'];
+        for(char l:letter)
         {
-            curr.push_back(c);
-            backtrack(digits,indx+1,curr,umap,res);
+            curr.push_back(l);
+            generate(res,digits,curr,indx+1,umap);
             curr.pop_back();
         }
     }
     vector<string> letterCombinations(string digits) {
         
-
+        if(digits.empty())return{};
         unordered_map<int,string>umap;
         umap[2] = "abc";
         umap[3] = "def";
@@ -30,13 +29,8 @@ public:
         umap[7] = "pqrs";
         umap[8] = "tuv";
         umap[9] = "wxyz";
-
-    vector<string>res;
-    if(digits.empty())return res;
-    string curr="";
-    backtrack(digits,0,curr,umap,res);
-    return res;
-
-
+        vector<string>res;
+        generate(res,digits,"",0,umap);
+        return res;
     }
 };
