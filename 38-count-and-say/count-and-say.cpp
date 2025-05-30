@@ -1,27 +1,29 @@
 class Solution {
 public:
-
-    string nextNum(string s)
+    string Recursion(string& str , int n)
     {
-        string res;
-        for(int i=0;i<s.length();i++)
-        {
-            int cnt =1;
-            while( i+1 < s.size() && s[i] == s[i+1])
-            {
-                ++i,++cnt;
-            }
-            res += to_string(cnt) + s[i];
-        }
-        return res;
+        if(n==0)return str;
+
+        int count =1 ;
+        string update="";
+        
+         for(int i=1;i<str.size();i++)
+             {
+                 if(str[i-1] == str[i])count++;
+                 else{
+                     update+=to_string(count);
+                     update+=str[i-1];
+                     count =1 ;
+                 }
+             }
+        update += to_string(count);
+        update += str[str.size()-1];
+       return  Recursion(update,n-1);
     }
     string countAndSay(int n) {
+        string str = "1";
+      return  Recursion(str,n-1);
+    
         
-        string tmp = "1";
-        for(int i=1;i<n;i++)
-        {
-            tmp = nextNum(tmp);
-        }
-        return tmp;
     }
 };
