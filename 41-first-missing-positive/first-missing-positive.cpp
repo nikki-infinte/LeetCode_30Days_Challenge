@@ -1,28 +1,23 @@
 class Solution {
 public:
-    int firstMissingPositive(vector<int>& nums) {
-        
-        unordered_map<int,int>umap;
-        int neg=0;
-        for(auto a:nums)
+    int firstMissingPositive(vector<int>& arr) {
+        int n = arr.size();
+        for(int i=0;i<n;i++)
         {
-            umap[a]++;
-            if(a<0)neg++;
+            while( arr[i] >= 1 && arr[i] <= n && arr[i]!= arr[arr[i]-1])
+            {
+                swap(arr[i],arr[arr[i]-1]);
+            }
         }
 
-        if(neg == nums.size()) {
-            return 1;
-        }
-        int m = *max_element(nums.begin(),nums.end());
-        
 
-        for(int i=1;i<=m;i++)
+        for(int i=1;i<=n ;i++)
         {
-            if(umap.find(i)==umap.end())
+            if(i!= arr[i-1])
             {
                 return i;
             }
         }
-        return m+1;
+        return n+1;
     }
 };
