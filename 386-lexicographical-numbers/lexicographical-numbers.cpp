@@ -1,20 +1,28 @@
 class Solution {
 public:
+
+    void solve(int currNum , int limit , vector<int>&res )
+    {
+
+        if(currNum > limit) return;
+        res.push_back(currNum);
+
+        for(int i=0;i<=9;i++)
+        {
+            int append = currNum*10+i;
+            if(append > limit){
+                return;
+            }
+            solve(append,limit,res);
+        }
+    }
     vector<int> lexicalOrder(int n) {
-        
-        vector<string>tmp;
-        for(int i=1;i<=n;i++)
+        vector<int>res;
+        for(int startnum =1 ;startnum <= 9 ;startnum++)
         {
-            tmp.push_back(to_string(i));
+            solve(startnum , n ,res);
         }
 
-        sort(tmp.begin(),tmp.end());
-
-        vector<int>ans;
-        for(int i=0;i<tmp.size();i++)
-        {
-            ans.push_back(stoi(tmp[i]));
-        }
-        return ans;
+        return res;
     }
 };
