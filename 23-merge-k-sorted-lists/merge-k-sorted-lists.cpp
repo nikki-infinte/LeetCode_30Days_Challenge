@@ -10,51 +10,33 @@
  */
 class Solution {
 public:
+
+    struct compare{
+        bool operator()(ListNode* a,ListNode* b){
+            return a->val > b->val;
+        }
+    };
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-         if(lists.empty())
-            return NULL;
-
-        // Priority queue to store pairs of (node value, index of list)
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-
-        // Push the head of each list into the priority queue
-        for(int i = 0; i < lists.size(); i++) {
-            if(lists[i] != nullptr) {
-                pq.push({lists[i]->val, i});
+       priority_queue< ListNode*, vector<ListNode*>,compare>pq;
+        for(int i=0;i<lists.size();i++)
+        {
+            ListNode* tmp = lists[i];
+            while(tmp!=NULL)
+            {
+                pq.push(tmp);
+                tmp = tmp->next;
             }
         }
-
-        if(pq.empty())
-            return NULL;
-
-        // Create a dummy node to start the merged list
-        ListNode* temp = new ListNode();
-        ListNode* head = temp;
-
-        while(true) {
-            // Get the smallest element from the priority queue
-            auto it = pq.top();
+        ListNode*head=new ListNode(-1);
+        ListNode* tmp = head;
+        while(!pq.empty())
+        {
+            tmp->next = pq.top();
+            
             pq.pop();
-
-            // Set the current node's value
-            temp->val = it.first;
-
-            // Move to the next node in the list from which the smallest element was extracted
-            if(lists[it.second]->next != nullptr) {
-                lists[it.second] = lists[it.second]->next;
-                pq.push({lists[it.second]->val, it.second});
-            }
-
-            // If the priority queue is not empty, create a new node for the merged list
-            if(!pq.empty()) {
-                temp->next = new ListNode();
-                temp = temp->next;
-            } else {
-                break;
-            }
+            tmp=tmp->next;
         }
-
-        return head;
-    
+        tmp->next = nullptr;
+        return head->next;
     }
 };
