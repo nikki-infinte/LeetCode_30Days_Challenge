@@ -1,20 +1,17 @@
 class Solution {
 public:
     int passThePillow(int n, int time) {
-    int idx=1;
-    int dir=1;
+        
+        int hop = n-1;
+        int round = time / hop;
+        int ans =0;
 
-
-    while(time>0)
-    {
-        if(idx+dir <= n && idx+dir>=1)
+        if( round % 2 == 0)
         {
-            idx+=dir;
-            time--;
+            ans = (1 + time %(hop) );
         }else{
-            dir*= -1;
+            ans = (n - time%(hop));
         }
-    }
-    return idx;
+        return ans;
     }
 };
