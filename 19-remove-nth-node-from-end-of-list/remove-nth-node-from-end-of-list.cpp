@@ -10,58 +10,43 @@
  */
 class Solution {
 public:
-    ListNode* deletehead(ListNode* head)
+
+
+    void deleteWithoutHead(ListNode* node)
     {
-        if(!head ) return NULL;
-        ListNode* tmp =head->next;
-        delete(head);
-        return tmp;
-    }
-    ListNode* deletetail(ListNode* head) {
-        if (!head || !head->next) {  // If list is empty or has only one node
-            delete head;
-            return nullptr;
+        ListNode* tmp = node->next;
+        if(tmp!=NULL)
+        {
+            node->val = tmp->val;
+            node->next = tmp->next;
+            delete tmp;
         }
-        ListNode* tmp = head;
-        while (tmp->next->next != nullptr) {  // Stop at second last node
-            tmp = tmp->next;
-        }
-        delete tmp->next;  // Delete last node
-        tmp->next = nullptr;
-        return head;
     }
     ListNode* removeNthFromEnd(ListNode* head, int n) {
         
-        if(!head )return NULL;
-        //using brute force 
 
-        int l=0;
-        ListNode* tmp=head;
-        while(tmp)
+       if (!head) return nullptr;
+
+        ListNode* dummy = new ListNode(0, head);
+        ListNode* slow = dummy;
+        ListNode* fast = dummy;
+        for(int i=0;i<=n;i++)fast = fast ->next;
+
+        while(fast!=NULL)
         {
-            l++;
-            tmp=tmp->next;
-        }
-      if (n > l) return head; 
-        if( l == n){
-            return deletehead(head);
-        }
-        if( n == 1)
-        {
-            return deletetail(head);
-        }
+            slow = slow ->next;
+            fast = fast->next;
 
-
-        int  t = l-n;
-        tmp=head;
-         for (int i = 1; i < t ;i++) {  // Move exactly (length-n-1) steps
-            tmp = tmp->next;
         }
-
-        ListNode* currn =tmp->next;
-        tmp->next = currn->next;
-        delete currn;
-        return head;
-
+       if (slow->next && slow->next->next) {
+            deleteWithoutHead(slow->next);
+        }else{
+            ListNode* tmp = slow->next;
+            slow->next = slow->next->next;
+            delete tmp;
+        }
+          ListNode* newHead = dummy->next;
+        delete dummy;
+        return newHead;
     }
 };
