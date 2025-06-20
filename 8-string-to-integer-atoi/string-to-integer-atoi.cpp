@@ -1,37 +1,48 @@
 class Solution {
 public:
-
     int myAtoi(string s) {
         
-        int i = 0;
-        int n = s.length();
-        
-        // Trim leading whitespaces
-        while (i < n && s[i] == ' ') {
+
+        //skip all leading spaces
+        int i=0;
+        while(i < s.size() && s[i]==' '){
             i++;
         }
-        
-        // Check for sign
-        int sign = 1;
-        if (i < n && (s[i] == '-' || s[i] == '+')) {
-            if (s[i] == '-') {
-                sign = -1;
-            }
+
+        // check sign
+        bool neg = false;
+        if(i < s.size() && s[i] == '-'){
+            neg=true;
+            i++;
+        }else if(i < s.size() && s[i] == '+'){
             i++;
         }
-        
-        long ans = 0;
-        while (i < n) {
-            if (s[i] >= '0' && s[i] <= '9') {
-                ans = ans * 10 + (s[i] - '0');
-                if (ans > INT_MAX) {
-                    return sign == 1 ? INT_MAX : INT_MIN;
+       
+        while( i < s.size() && s[i]=='0')i++;
+        long long ans=0;
+        for(int k=i;k<s.size();k++)
+        {
+            if(isdigit(s[k])){
+                int d = s[k] - '0';
+                ans = ans *10+d;
+
+                if(neg)
+                {
+                    if(ans  > (long long)INT_MAX+1) return INT_MIN;
+                }else{
+                    if(ans > INT_MAX)return INT_MAX;
                 }
-                i++;
-            } else {
+
+            }else if( s[k] !='_'){
                 break;
             }
         }
-        return static_cast<int>(ans * sign);
+
+        //put the sign 
+        if(neg ){
+           ans = 0-ans ;
+        }
+        return ans;
+        
     }
 };
