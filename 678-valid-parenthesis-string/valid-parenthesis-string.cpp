@@ -1,35 +1,30 @@
 class Solution {
 public:
+
+   unordered_map<string, bool> memo;
+
+bool dfs(string& s, int index, int open) {
+    if (open < 0) return false;
+    if (index == s.size()) return open == 0;
+
+    string key = to_string(index) + "," + to_string(open);
+    if (memo.count(key)) return memo[key];
+
+    bool res = false;
+    if (s[index] == '(')
+        res = dfs(s, index + 1, open + 1);
+    else if (s[index] == ')')
+        res = dfs(s, index + 1, open - 1);
+    else // '*'
+        res = dfs(s, index + 1, open + 1) || 
+              dfs(s, index + 1, open - 1) || 
+              dfs(s, index + 1, open);
+
+    return memo[key] = res;
+}
+
     bool checkValidString(string s) {
-        int minrange=0;
-        int maxrange=0;
 
-        for(int i=0;i<s.length();i++)
-        {
-            if(s[i] =='(')
-            {
-                minrange+=1;
-                maxrange+=1;
-            }else if(s[i]==')')
-            {
-                minrange -= 1;
-                maxrange -= 1;
-            }
-
-            else{
-                minrange -=1;
-                maxrange +=1;
-
-            }
-
-            if(minrange<0){
-                minrange=0;
-            }
-            if(maxrange<0)
-            {
-                return false;
-            }
-        }
-        return(minrange==0);
+      return  dfs(s,0,0);
     }
 };
