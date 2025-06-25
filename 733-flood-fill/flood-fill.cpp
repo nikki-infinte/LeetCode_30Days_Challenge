@@ -1,37 +1,34 @@
 class Solution {
 public:
-  int n, m;
-
-bool isValid(int x, int y, vector<vector<int>>& image, int org) {
-    return (x >= 0 && x < n && y >= 0 && y < m && image[x][y] == org);
-}
-
-    void DFS(vector<vector<int>>&image , int sr , int sc , int color,int org)
+    void DFS(vector<vector<int>>& image , int i,int j ,int m, int n,int newc,int oldc)
     {
-        image[sr][sc] = color;
 
-      int dx[] = {-1, 0, 1, 0};
-        int dy[] = { 0, 1, 0, -1};
-        for(int i=0;i<4;i++)
-        {
-            int newx = sr+dx[i];
-            int newy = sc+dy[i];
+        vector<int>dx = {1,-1,0,0};
+        vector<int>dy = {0,0,-1,1};
 
-            if(isValid(newx,newy,image,org))
+        if(image[i][j] == oldc){
+            image[i][j] = newc;
+            
+
+            for(int k = 0; k< 4;k++)
             {
-                DFS(image,newx,newy,color,org);
+                int newx = dx[k] + i;
+                int newy = dy[k]  + j;
+
+                if(newx >= 0 && newy >= 0 && newx <n && newy < m  && image[newx][newy] == oldc){
+                    DFS(image,newx,newy,m,n,newc,oldc);
+                }
             }
         }
     }
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        n = image.size();
-        m = image[0].size();
 
-        int org = image[sr][sc];
-       if (org != color) {
-            DFS(image, sr, sc, color, org);
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color)    {
+        int n = image.size();
+        int m = image[0].size();
+
+         if (image[sr][sc] != color) {
+            DFS(image, sr, sc,  m,n, color, image[sr][sc]);
         }
-         return image;
-
+        return image;
     }
 };
