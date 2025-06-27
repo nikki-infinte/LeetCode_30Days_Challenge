@@ -1,31 +1,21 @@
 class Solution {
 public:
     int maxScore(vector<int>& cardPoints, int k) {
-        //special sliding s=window approach 
+        int maxSum = 0;
+        int  n= cardPoints.size();
 
-        //edge case
-        int n=cardPoints.size();
-        if(n == k)
+        for(int i=0;i<k;i++)
         {
-            return accumulate(cardPoints.begin(),cardPoints.end(),0);
+            maxSum += cardPoints[i];
         }
-        
-        int i=0;
-        int sum=0;
-         for(;i<k;i++){
-             sum+=cardPoints[i];
-         }
-         i--;
-         int maxsum=sum;
-         int j=(n-1);
-         while(i>=0)
-         {
-            sum=sum-cardPoints[i];
-            i--;
-            sum+=cardPoints[j];
-            j--;
-            maxsum=max(maxsum,sum);
-         }
-         return maxsum;
+
+        int currSum = maxSum;
+        for(int i=1;i<=k ;i++)
+        {
+            currSum -= cardPoints[k-i];
+            currSum += cardPoints[n-i];
+            maxSum = max(currSum , maxSum);
+        }
+        return maxSum;
     }
 };
