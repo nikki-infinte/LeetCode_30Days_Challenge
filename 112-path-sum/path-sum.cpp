@@ -11,22 +11,17 @@
  */
 class Solution {
 public:
-    
-    bool hasPathSum(TreeNode* root, int targetSum) {
 
-         if (root == NULL) {
-            return false;
-        }
-        if( root == NULL && targetSum==0){
-            return true;
-        }
-       
-       
-        if (!root->left && !root->right) {
-            return targetSum == root->val;
-        }
-        int statel = hasPathSum(root->left ,targetSum - root->val);
-        int stater =hasPathSum(root->right , targetSum- root->val);
-        return statel || stater;
+ bool TargetFind(TreeNode* root, int sum) {
+    if (root == nullptr) return false;   
+    sum -= root->val;
+    if (root->left == nullptr && root->right == nullptr) {
+        return sum == 0;
+    }
+    return TargetFind(root->left, sum) || TargetFind(root->right, sum);
+}
+
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        return TargetFind(root,targetSum);
     }
 };
