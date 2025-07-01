@@ -16,7 +16,6 @@ public:
         while(j < n)
         {
             sum+=nums[j];
-
             while((i <= j) && (sum >= target))
             {
                 maxlen=min(maxlen , j-i+1);
