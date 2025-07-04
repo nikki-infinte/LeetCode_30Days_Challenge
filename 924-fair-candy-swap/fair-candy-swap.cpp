@@ -2,25 +2,18 @@ class Solution {
 public:
     vector<int> fairCandySwap(vector<int>& a, vector<int>& b) {
         
-        // brute force
-        sort(a.begin(),a.end());
+        int sumA = accumulate(a.begin(),a.end(),0);
+        int sumB = accumulate(b.begin(),b.end(),0);
+
+        int delta = (sumA - sumB)/2;
+
         sort(b.begin(),b.end());
-
-        int asum = accumulate(a.begin(),a.end(),0);
-        int bsum = accumulate(b.begin(),b.end(),0);
-
-        for(int i=0;i<a.size();i++)
-        {
-            int as = a[i];
-            for(int j=0;j<b.size();j++){
-                int state1 = asum -as +b[j];
-                int state2 = bsum-b[j] +as;
-
-                if(state1 == state2){
-                    return {a[i],b[j]};
-                }
+        for(int x: a){
+            int y=x-delta;
+            if(binary_search(b.begin() , b.end() , y)){
+                return {x,y};
             }
         }
-        return {-1,-1};
+        return {};
     }
 };
