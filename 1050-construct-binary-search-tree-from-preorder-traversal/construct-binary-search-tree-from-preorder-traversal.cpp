@@ -12,26 +12,21 @@
 class Solution {
 public:
 
-    TreeNode* create(TreeNode* root,int elem){
-        if(root == nullptr){
-            root = new TreeNode(elem);
-            return root;
-        }
-
-
-        if(root->val < elem){
-            root->right = create(root->right, elem);
-        }else if(root->val > elem){
-            root->left = create(root->left,elem);
-        }
+    TreeNode* bst(vector<int>pre ,  int& indx ,int low ,int high)
+    {
+        
+        if(indx >= pre.size() )return nullptr;
+        int val = pre[indx];
+        if(val < low || val > high)return nullptr;
+         indx+=1;
+        TreeNode* root = new TreeNode(val);
+        root->left = bst(pre,indx,low,root->val);
+        root->right = bst(pre,indx,root->val,high);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        
-        TreeNode* root = new TreeNode(preorder[0]);
-        for(int i=1;i<preorder.size();i++){
-           root =create(root,preorder[i]);
-        }
-        return root;
+
+        int indx =0;
+        return bst(preorder,indx,INT_MIN,INT_MAX);
     }
 };
