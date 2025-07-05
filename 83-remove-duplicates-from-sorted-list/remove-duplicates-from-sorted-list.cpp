@@ -12,19 +12,21 @@ class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
         
-        if(!head)return nullptr;
-        ListNode* curr = head;
-        while(curr && curr->next)
-        {
-            if(curr->val == curr->next->val)
+      if(head == nullptr || head->next == nullptr) return head;
+
+       // ListNode* pre = nullptr;
+        ListNode* tmp = head;
+        while(tmp->next != nullptr){
+
+            if(tmp!=nullptr &&  tmp->next != nullptr && tmp->val == tmp->next->val)
             {
-                curr->next = curr->next->next;
-            } else {
-            // Move to the next distinct value
-            curr = curr->next;
+                tmp->next = tmp->next->next;
+            }else{
+                    tmp = tmp->next;
             }
+        
         }
         return head;
-       
+
     }
 };
