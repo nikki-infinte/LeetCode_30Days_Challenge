@@ -11,45 +11,51 @@
  */
 class Solution {
 public:
-
     TreeNode* findMin(TreeNode* root)
     {
-        while(root && root->left)
-        {
-            root = root ->left;
+        while(root->left!=nullptr){
+            root=root->left;
         }
         return root;
     }
-    TreeNode* deleteNode(TreeNode* root, int key) {
-        
-        if(!root)return nullptr;
 
-        if(key < root->val )
-        {
-            root->left  = deleteNode(root->left,key);
-        }else if(key > root->val)
-        {
-            root->right = deleteNode(root->right,key);
+    TreeNode* deleteNode(TreeNode* root, int key) {
+     
+        //edge case 
+        if(root == nullptr){
+            return root;
         }
-        else{
-            if(!root->left)
-            {
+
+        if(root->val > key){
+              root->left = deleteNode(root->left,key);
+        }else if(root->val < key){
+              root->right = deleteNode(root->right,key);
+        }else{
+
+            //node found
+            //case 1 : node with one hild or no child
+
+            if(root->left == nullptr){
                 TreeNode* tmp = root->right;
                 delete root;
                 return tmp;
-            }
-            if(!root->right)
-            {
+            }else if(root->right == nullptr){
                 TreeNode* tmp = root->left;
                 delete root;
                 return tmp;
             }
-            TreeNode* successor =findMin(root->right);
-            root->val = successor->val;
-            root->right = deleteNode(root->right,successor->val);
+
+            //case 2 : Node with 2 children 
+            TreeNode* temp = findMin(root->right);
+            root->val = temp->val;
+
+            root->right = deleteNode(root->right,temp->val );
+            
+
         }
+        return root;
 
-         return root; 
-
+        
+       
     }
 };
