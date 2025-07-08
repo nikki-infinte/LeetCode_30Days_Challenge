@@ -1,33 +1,26 @@
 class Solution {
 public:
-    int numberOfSubarrays(vector<int>& nums, int k) {
-        
+
+
+    int atmost(vector<int>&nums,int k){
+        int n =nums.size();
         int i=0,j=0;
-        int n = nums.size();
-
-        int cnt =0;
-        int temp=0;
-
-        int ans=0;
-        while( j < n )
-        {
-            if(nums[j] % 2){
-                cnt++;
-                temp = 0;
-            }
-
-            while(  cnt  == k)
-            {
-                if(nums[i]%2)cnt--;
-                temp++;
+        int res =0  ;
+        while(j<n){
+            if(nums[j]%2 != 0)k--;
+            while(i<=j && k < 0){
+                if(nums[i]%2 !=0)k++;
                 i++;
+               
             }
+            res += j-i+1;
 
-            
-                ans+=temp;
-            
             j++;
         }
-        return ans;
+        return res;
+    }
+    int numberOfSubarrays(vector<int>& nums, int k) {
+       // if( k == 1)return atmost(nums,k);
+       return atmost(nums,k)-atmost(nums,k-1);
     }
 };
