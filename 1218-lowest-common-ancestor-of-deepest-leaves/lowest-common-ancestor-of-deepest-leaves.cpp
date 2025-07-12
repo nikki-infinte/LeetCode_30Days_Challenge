@@ -12,42 +12,52 @@
 class Solution {
 public:
 
+     map<int,vector<TreeNode*>>mp;
+   int levelDepth(TreeNode* root){
+        if(root==nullptr)return 0 ;
 
-    unordered_map<int,int>umap;
-    int maxDepth  = INT_MIN;
-    void depth(int d,TreeNode* root)
-    {
-        if(!root)return ;
-
-        maxDepth = max(maxDepth , d);
-        umap[root->val] = d;
-
-        depth(d+1,root->left);
-        depth(d+1,root->right);
-
-    }
-    TreeNode* LCA(TreeNode* root)
-    {
-        if(root == NULL || umap[root->val] == maxDepth)
-        {
-            return root;
-        }
-
-        TreeNode* l = LCA(root->left);
-        TreeNode* r = LCA(root->right);
-
-        if( l != NULL && r!=NULL)return root;
-        else if(l == NULL && r != NULL)return r;
-        else if( l != NULL && r== NULL)return l;
-
-        return NULL;
-
-    }
-
-
-    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        queue<pair<TreeNode*,int>>q;
+        q.push({root,0});
+        int maxd=0;
         
-        depth(0,root);
-        return LCA(root);
+        while(!q.empty()){
+            
+                auto [node,d] = q.front();
+                q.pop();
+
+                
+                maxd = max(d,maxd);
+
+                mp[d].push_back(node);
+                if(node->left){
+                    q.push({node->left , d+1} );
+                }
+                if(node->right){
+                    q.push({node->right,d+1});
+                }
+            
+        }
+    return maxd;
+    }
+
+    TreeNode* LCA(TreeNode* root,TreeNode* p, TreeNode* q){
+        if(root == nullptr || root == p || root == q)return root;
+        TreeNode* lt = LCA(root->left,p,q);
+        TreeNode* rt =LCA(root->right,p,q);
+
+        if(lt == NULL)return rt;
+        else if(rt == NULL)return lt;
+        else return root;
+    }
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        mp.clear();
+        int maxd = levelDepth(root);
+        vector<TreeNode*>deepest = mp[maxd];
+        TreeNode* lca = deepest[0];
+        for(int i=1;i<deepest.size();++i){
+            lca = LCA(root,lca,deepest[i]);
+        }
+    return lca;
+
     }
 };
