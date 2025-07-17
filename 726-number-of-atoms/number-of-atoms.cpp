@@ -1,57 +1,65 @@
 class Solution {
 public:
     string countOfAtoms(string formula) {
-        stack<unordered_map<string, int>> stk;
-        stk.push({}); // Initialize with an empty map
-        
-        int i = 0, n = formula.length();
-        
-        while (i < n) {
-            if (formula[i] == '(') {
-                stk.push({});
+        int n = formula.length();
+        stack<unordered_map<string,int>> st;
+        st.push(unordered_map<string,int>());
+
+        int i = 0;
+        while(i < n){
+            if(formula[i] == '('){
+                st.push(unordered_map<string,int>());
                 i++;
-            } else if (formula[i] == ')') {
-                unordered_map<string, int> top = stk.top();
-                stk.pop();
+            }
+            else if(formula[i] == ')') {
+                i++; // skip ')'
+                unordered_map<string,int> curr = st.top();
+                st.pop();
+
+                // Parse multiplier
+                string multi;
+                while(i < n && isdigit(formula[i])){
+                    multi.push_back(formula[i]);
+                    i++;
+                }
+
+                int multInteger = multi.empty() ? 1 : stoi(multi);
+                for(auto &it : curr){
+                    it.second *= multInteger;
+                }
+
+                for(auto &it : curr){
+                    st.top()[it.first] += it.second;
+                }
+            }
+            else {
+                string curr;
+                curr.push_back(formula[i]);
                 i++;
-                int start = i;
-                while (i < n && isdigit(formula[i])) {
+                while(i < n && isalpha(formula[i]) && islower(formula[i])){
+                    curr.push_back(formula[i]);
                     i++;
                 }
-                int multiplier = start < i ? stoi(formula.substr(start, i - start)) : 1;
-                for (auto& kv : top) {
-                    stk.top()[kv.first] += kv.second * multiplier;
-                }
-            } else {
-                int start = i++;
-                while (i < n && islower(formula[i])) {
+
+                string currCnt;
+                while(i < n && isdigit(formula[i])){
+                    currCnt.push_back(formula[i]);
                     i++;
                 }
-                string element = formula.substr(start, i - start);
-                start = i;
-                while (i < n && isdigit(formula[i])) {
-                    i++;
-                }
-                int count = start < i ? stoi(formula.substr(start, i - start)) : 1;
-                stk.top()[element] += count;
+
+                int currCountInteger = currCnt.empty() ? 1 : stoi(currCnt);
+                st.top()[curr] += currCountInteger;
             }
         }
-        
-        unordered_map<string, int> result = stk.top();
-        vector<string> elements;
-        for (auto& kv : result) {
-            elements.push_back(kv.first);
-        }
-        sort(elements.begin(), elements.end());
-        
+
+        map<string,int> sortedMap(begin(st.top()), end(st.top()));
         string res;
-        for (const auto& element : elements) {
-            res += element;
-            if (result[element] > 1) {
-                res += to_string(result[element]);
+        for(auto &it : sortedMap){
+            res += it.first;
+            if(it.second > 1){
+                res += to_string(it.second);
             }
         }
-        
         return res;
     }
 };
