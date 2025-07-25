@@ -1,32 +1,36 @@
 class Solution {
 public:
-    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+       int n= obstacleGrid.size();
+       int m = obstacleGrid[0].size();
+        vector<vector<int>>grid(n,vector<int>(m,0));
         
 
-        int r =grid.size(),c=grid[0].size();
+            // Base case: starting cell
+        if(obstacleGrid[0][0] == 1) return 0;
+        grid[0][0] = 1;
 
-        vector<vector<int>>dp ( r,vector<int>(c,0));
-        if(grid[0][0] == 0)
-        {
-            dp[0][0]=1;
+
+          for(int i = 1; i < n; i++) {
+            if(obstacleGrid[i][0] == 1) break;
+            grid[i][0] = 1;
         }
 
-          for(int i = 0; i < r; i++) {
-        for(int j = 0; j < c; j++) {
-          
-            // If cell has an obstacle, set paths to 0
-            if(grid[i][j] == 1) {
-                dp[i][j] = 0;
-            } else {
-              
-                // Accumulate paths from top cell
-                if(i > 0) dp[i][j] += dp[i-1][j];
-              
-                // Accumulate paths from left cell
-                if(j > 0) dp[i][j] += dp[i][j-1];
+        // Fill first row
+        for(int j = 1; j < m; j++) {
+            if(obstacleGrid[0][j] == 1) break;
+            grid[0][j] = 1;
+        }
+
+         for(int i = 1; i < n; i++) {
+            for(int j = 1; j < m; j++) {
+                if(obstacleGrid[i][j] == 1) {
+                    grid[i][j] = 0;
+                } else {
+                    grid[i][j] = grid[i-1][j] + grid[i][j-1];
+                }
             }
         }
-    }
-    return dp[r-1][c-1];
+        return grid[n-1][m-1];
     }
 };
