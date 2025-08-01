@@ -1,23 +1,23 @@
 class Solution {
 public:
     vector<int> intersection(vector<vector<int>>& nums) {
-        map<int,int> mp;
-        for(auto a:nums)
-        {
-            for(int i=0;i<a.size();i++)
-            {
-                mp[a[i]]++;
-            }
-        }
-      vector<int> ans;
-        for (auto it = mp.begin(); it != mp.end(); ++it) {
-            // Check if the value (second) is equal to the number of vectors
-            if (it->second == nums.size()) {
-                ans.push_back(it->first);
+        
+        unordered_map<int,int>umap;
+        for(auto a:nums){
+            for(int i=0;i<a.size();i++){
+                umap[a[i]]++;
             }
         }
 
+     
+        vector<int>ans;
+
+        for(auto a:umap){
+            if(a.second == nums.size()){
+                ans.push_back(a.first);
+            }
+        }
+        sort(ans.begin(),ans.end());
         return ans;
     }
-
 };
