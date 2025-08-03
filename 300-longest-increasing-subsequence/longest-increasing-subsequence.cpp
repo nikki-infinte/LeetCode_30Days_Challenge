@@ -1,27 +1,28 @@
 class Solution {
 public:
-    int backtrack(int index,int prev,vector<int>&nums,vector<vector<int>>&dp)
-    {
-        if(index >=nums.size())
-        {
+
+    int solve(int i,int prevTake,vector<int>&nums,vector<vector<int>>&dp){
+        
+        if(i >= nums.size()){
             return 0;
         }
-        if (dp[index][prev + 1] != -1) {
-            return dp[index][prev + 1]; // Return cached result
+        if(dp[i][prevTake+1] != -1){
+            return dp[i][prevTake+1];
         }
-
-        //not include
-        int maxlen=0+backtrack(index+1, prev,nums,dp);
-       if (prev == -1 || nums[prev] < nums[index]) {
-            maxlen = max(maxlen, 1 + backtrack(index + 1, index, nums, dp));
-        }
-     dp[index][prev + 1] = maxlen; // Cache the result
-        return maxlen;
+        //take
+        int take =0;
+        if(prevTake == -1 || nums[i] > nums[prevTake]){
+            take = 1+solve(i+1,i,nums,dp);
+        } 
+        //not take 
+        int notTake = solve(i+1,prevTake,nums,dp);
+        return dp[i][prevTake+1] = max(take,notTake);
     }
     int lengthOfLIS(vector<int>& nums) {
-        int n=nums.size();
- vector<vector<int>> dp(n, vector<int>(n + 1, -1));
-      
-     return backtrack(0,-1,nums,dp);
+        int n = nums.size();
+        
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+
+        return solve(0,-1,nums,dp);
     }
 };
