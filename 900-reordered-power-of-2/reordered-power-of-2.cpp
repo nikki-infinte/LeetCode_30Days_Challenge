@@ -1,24 +1,22 @@
 class Solution {
 public:
 
+    string getSorted(int n){
+        string s = to_string(n);
+        sort(s.begin(),s.end());
 
-    bool recursion(string& n , int i ){
-       if( i == n.size()){
-            if(n[0] == '0')return false;
-            int val =stoi(n);
-            return ( (val&(val-1)) == 0);
-       }
-
-       for(int j=i;j<n.size();j++){
-            swap(n[j],n[i]);
-             if (recursion(n, i + 1)) return true; 
-            swap(n[j],n[i]);
-       }
-       return false;
+        return s;
     }
     bool reorderedPowerOf2(int n) {
-        if(n < 0) return false;
-        string tmp = to_string(n); 
-        return ( recursion(tmp,0) );
+        
+        if(n==0)return false;
+
+        string s1 = getSorted(n);
+        for(int power = 0;power <= 29 ;power++){
+
+            string toCheck = getSorted(1<<power);
+            if(toCheck == s1)return true;
+        }
+        return false;
     }
 };
