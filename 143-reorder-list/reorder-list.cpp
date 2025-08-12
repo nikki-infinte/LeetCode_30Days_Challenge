@@ -10,27 +10,40 @@
  */
 class Solution {
 public:
+    ListNode* reverseLL(ListNode* head){
+        if(head ==nullptr || head->next==nullptr)return head;
+
+        ListNode* last = reverseLL(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return last;
+    }
     void reorderList(ListNode* head) {
-        // brute force
+        
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast  && fast->next != nullptr){
+            slow = slow->next;
+            fast = fast->next->next;
 
-        vector<int> tmpArr;
-        ListNode* tmp = head;
-        while (tmp != nullptr) {
-            tmpArr.push_back(tmp->val);
-            tmp = tmp->next;
         }
 
-        int i = 0, j = tmpArr.size() - 1;
-        ListNode* tmp2 = head;
-        while (i <= j) {
-            tmp2->val = tmpArr[i];
-            i++;
-            tmp2 = tmp2->next;
+        ListNode* rev = reverseLL(slow);
+        ListNode* curr = head;
 
-            if (i <= j) {
-                tmp2->val = tmpArr[j--];
-                tmp2 = tmp2->next;
-            }
-        }
+        while(rev->next != nullptr){
+
+
+            ListNode* tmp = curr->next;
+            ListNode* revtmp = rev->next;
+
+            curr->next = rev;
+            rev->next = tmp;
+
+            curr = tmp;
+            rev = revtmp;
+        }        
+        
+
     }
 };
