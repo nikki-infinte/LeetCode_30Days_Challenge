@@ -19,31 +19,51 @@ public:
         return last;
     }
     void reorderList(ListNode* head) {
-        
-        ListNode* slow = head;
-        ListNode* fast = head;
-        while(fast  && fast->next != nullptr){
-            slow = slow->next;
-            fast = fast->next->next;
+          if (!head || !head->next) return;
+        // ListNode* slow = head;
+        // ListNode* fast = head;
+        // while(fast  && fast->next != nullptr){
+        //     slow = slow->next;
+        //     fast = fast->next->next;
 
+        // }
+
+        // ListNode* rev = reverseLL(slow);
+        // ListNode* curr = head;
+
+        // while(rev->next != nullptr){
+
+
+        //     ListNode* tmp = curr->next;
+        //     ListNode* revtmp = rev->next;
+
+        //     curr->next = rev;
+        //     rev->next = tmp;
+
+        //     curr = tmp;
+        //     rev = revtmp;
+        // }        
+
+
+        stack<ListNode*>st;
+        ListNode* tmp = head;
+        while(tmp){
+            st.push(tmp);
+            tmp=tmp->next;
         }
 
-        ListNode* rev = reverseLL(slow);
-        ListNode* curr = head;
+        ListNode* curr =head;
+        int mid= st.size()/2;
 
-        while(rev->next != nullptr){
+        while (mid--) {
+            ListNode* next = curr->next;
+            ListNode* tail = st.top(); st.pop();
 
-
-            ListNode* tmp = curr->next;
-            ListNode* revtmp = rev->next;
-
-            curr->next = rev;
-            rev->next = tmp;
-
-            curr = tmp;
-            rev = revtmp;
-        }        
-        
+            curr->next = tail;
+            tail->next = next;
+            curr = next;
+    }
+        curr->next = nullptr;
 
     }
 };
