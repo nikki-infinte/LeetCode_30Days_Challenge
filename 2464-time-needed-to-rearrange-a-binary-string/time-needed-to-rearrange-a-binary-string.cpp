@@ -1,27 +1,20 @@
 class Solution {
 public:
-    int secondsToRemoveOccurrences(string s) {
-        int count = 0;
-        bool change = true;
-        while (change) {
-
-            int n = s.size();
-            string next = s;
-            change = false;
-            for (int i = 0; i < s.size() - 1; ++i) {
-                if (s[i] == '0' && s[i + 1] == '1') {
-                    next[i] = '1';
-                    next[i + 1] = '0';
-                    ++i;
-                    change = true;
-                }
-            }
-
-            if (change) {
-                s = next;
-                ++count;
-            }
-        }
-        return count;
-    }
+	int secondsToRemoveOccurrences(string s) {
+		int count=0;
+		int n=s.size();
+		for(int i=0;i<n;i++){
+			bool flag=false;
+			for(int j=0;j<n-1;j++){
+				if(s[j]=='0' && s[j+1]=='1'){
+					s[j]='1';
+					s[j+1]='0';
+					flag=true;
+					j++;
+				}
+			}
+			if(flag) count++;
+		}
+		return count;
+	}
 };
