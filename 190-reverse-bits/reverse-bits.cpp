@@ -1,22 +1,24 @@
 class Solution {
 public:
-    uint32_t reverseBits(uint32_t n) {
-        
+    int reverseBits(int n) {
+        int left =0, right =31;
 
-        //approach 1 : 
+        while(left< right ){
 
-        int i=0, j=31;
-        while( i < 16)
-        {
-            if( ((n>>i)& 1) !=  ((n>>j)&1) ){
-                n^=(1<<i) ^ (1 << j);
-               
+            //extract the bits 
+            int l =(n>>left)&1;
+            int r = (n>>right)&1;
+         
+            if( l != r){
+                //toggle if they are different
+                n^=(1<<left);
+                n^=(1<<right);
             }
-
-             i++;
-                j--;
+         
+         left++;
+         right--;
         }
         return n;
-        
     }
+
 };
