@@ -4,10 +4,11 @@ public:
         int ansArea = 0;
         double maxDiagonal = 0;
 
-        for (int i = 0; i < dimensions.size(); i++) {
+        for (int i = 0; i < dimensions.size(); i++) { 
             int len = dimensions[i][0];
             int wid = dimensions[i][1];
-            double diagonal = sqrt(len * len + wid * wid);
+            double diagonal = (len * len + wid * wid); 
+
             int area = len * wid;
 
             if (diagonal > maxDiagonal) {
