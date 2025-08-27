@@ -6,34 +6,54 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+class BSTIterator{
+    stack<TreeNode*>stk;
+    bool forward;
+    public:
+        BSTIterator(TreeNode* root,bool isForward):forward(isForward){
+            pushAll(root);
+        }
+
+
+        int next(){
+            TreeNode* node = stk.top();
+            stk.pop();
+
+            if(forward)pushAll(node->right);
+            else pushAll(node->left);
+
+            return node->val;
+        }
+
+
+    bool hasNext() {
+        return !stk.empty();
+    }
+    private:
+    void pushAll(TreeNode* root){
+        while(root){
+            stk.push(root);
+            root = forward ? root->left : root->right;
+        }
+    }
+};
 class Solution {
 public:
-    void inorder(TreeNode* root, vector<int>&oder) {
-
-        if (!root)
-            return;
-        inorder(root->left, oder);
-        oder.push_back(root->val);
-         inorder(root->right, oder);
-    }
     bool findTarget(TreeNode* root, int k) {
+        if(!root)return false;
 
-        vector<int> oder;
-        inorder(root, oder);
-        int left = 0, right = oder.size() - 1;
-        if(oder.size() == 1) return false;
-        while (left < right) {
-            if (oder[left] + oder[right] == k) {
-                return true;
-            } else if (oder[left] + oder[right] < k) {
-                left++;
-            } else {
-                right--;
-            }
+         BSTIterator l(root, true);   // in-order
+        BSTIterator r(root, false); // reverse in-order
+
+        int i = l.next(), j = r.next();
+        while (i < j) {
+            if (i + j == k) return true;
+            else if (i + j < k) i = l.next();
+            else j = r.next();
         }
         return false;
     }
