@@ -1,27 +1,26 @@
 class Solution {
 public:
-    // Custom comparator to decide order based on concatenated result
-    static bool compare(int a, int b) {
-        std::string strA = std::to_string(a);
-        std::string strB = std::to_string(b);
-        return (strA + strB) > (strB + strA);
-    }
-    
-    std::string largestNumber(std::vector<int>& nums) {
-        // Sort nums based on the custom comparator
-        std::sort(nums.begin(), nums.end(), compare);
+    string largestNumber(vector<int>& nums) {
+        
+        sort(nums.begin(),nums.end(),[](const int &a,const int &b){
+           string s1 = to_string(a) + to_string(b);
+           string s2 = to_string(b)+to_string(a);
+           return s1 > s2;
+        });
 
-        // Handle edge case where the highest number is 0
-        if (nums[0] == 0) {
-            return "0";
+        string res ="";
+        for(int i=0;i<nums.size();i++){
+
+            res+=to_string(nums[i]);
         }
-
-        // Concatenate the numbers to form the largest number
-        std::string ans;
-        for (int num : nums) {
-            ans += std::to_string(num);
+        int zero_cnt =0;
+ 
+        for(auto n:nums){
+            if(n == 0)zero_cnt++;
         }
+        if(zero_cnt == nums.size())return "0";
+        
+        return res;
 
-        return ans;
     }
 };
