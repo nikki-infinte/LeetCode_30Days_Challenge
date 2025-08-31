@@ -1,28 +1,23 @@
 class Solution {
 public:
+    int solve(vector<int>& nums, int indx, int prevIndx, vector<vector<int>>& dp) {
+        if (indx == nums.size()) return 0;
 
-    int solve(int i,int prevTake,vector<int>&nums,vector<vector<int>>&dp){
-        
-        if(i >= nums.size()){
-            return 0;
+        if (dp[indx][prevIndx + 1] != -1) return dp[indx][prevIndx + 1];
+
+        int take = 0;
+        if (prevIndx == -1 || nums[indx] > nums[prevIndx]) {
+            take = 1 + solve(nums, indx + 1, indx, dp);
         }
-        if(dp[i][prevTake+1] != -1){
-            return dp[i][prevTake+1];
-        }
-        //take
-        int take =0;
-        if(prevTake == -1 || nums[i] > nums[prevTake]){
-            take = 1+solve(i+1,i,nums,dp);
-        } 
-        //not take 
-        int notTake = solve(i+1,prevTake,nums,dp);
-        return dp[i][prevTake+1] = max(take,notTake);
+
+        int nottake = solve(nums, indx + 1, prevIndx, dp);
+
+        return dp[indx][prevIndx + 1] = max(take, nottake);
     }
+
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-
-        return solve(0,-1,nums,dp);
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1)); // prevIndx from -1 to n-1
+        return solve(nums, 0, -1, dp);
     }
 };
