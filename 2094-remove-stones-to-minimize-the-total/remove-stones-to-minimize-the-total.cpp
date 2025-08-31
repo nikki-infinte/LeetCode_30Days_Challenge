@@ -5,13 +5,11 @@ public:
         for(auto a:piles){
             pq.push(a);
         }
-
-        for(int i=0;i<k && !pq.empty();i++){
-            int elm=pq.top();
+        for(int i=0;i<k;i++){
+            int elem = pq.top();
             pq.pop();
-            pq.push(ceil((double)elm/2));
+            pq.push((elem/2)+(elem%2));
         }
-
         int ans =0;
         while(!pq.empty()){
             ans+=pq.top();
