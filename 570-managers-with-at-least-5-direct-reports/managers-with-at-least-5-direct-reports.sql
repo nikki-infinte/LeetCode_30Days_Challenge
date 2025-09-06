@@ -10,9 +10,22 @@
 
 # now by self join
 
-select  e.name
-from Employee e
-join Employee e2
-on e.id = e2.managerId
-group by e.id 
-having count(*) >=5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+select (s1.name) 
+from Employee s1
+join Employee s2
+on s1.id = s2.managerId
+group by (s1.id)
+having count(*) >= 5
