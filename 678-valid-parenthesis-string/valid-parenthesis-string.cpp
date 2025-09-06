@@ -1,25 +1,32 @@
 class Solution {
 public:
-    bool checkValidString(string s) {
-        int mini=0,maxe = 0;
-        for(int i=0;i<s.length();i++)
-        {
-            if(s[i] == '('){
-                mini = mini+1;
-                maxe=maxe +1;
-            }else if(s[i]==')')
-            {
-                mini =mini-1;
-                maxe = maxe-1;
-            }
-            else{
-                mini=mini-1;
-                maxe =maxe +1;
-            }
+    int dp[101][101];
+    bool solve(int indx,int open ,string s){
 
-            if(mini < 0)mini =0;
-            if(maxe < 0)return false;
+        //base case
+        if(indx >= s.length())return open==0;
+        
+        if(dp[indx][open]!=-1)return dp[indx][open];
+        //recursion condition
+        bool isValid = false;
+        if(s[indx] == '('){
+            isValid |= solve(indx+1,open+1,s);
+        }else if(s[indx] == '*'){
+            isValid |= solve(indx+1,open,s);
+            isValid |= solve(indx+1,open+1,s);
+            if(open > 0){
+                isValid |= solve(indx+1,open-1,s);
+            }
+        }else if(open > 0){
+             isValid |= solve(indx+1,open-1,s);
         }
-        return mini == 0;
+        if(isValid)dp[indx][open] = 1;
+        else dp[indx][open] = 0;
+
+        return isValid;
+    }
+    bool checkValidString(string s) {
+        memset(dp,-1,sizeof(dp));
+        return solve(0,0,s);
     }
 };
