@@ -1,12 +1,15 @@
-SELECT 
-    s.user_id,
-    ROUND(
-        COALESCE(SUM(CASE WHEN c.action = 'confirmed' THEN 1 ELSE 0 END) * 1.0 / COUNT(c.user_id), 0),
-        2
-    ) AS confirmation_rate
-FROM 
-    Signups s
-LEFT JOIN 
-    Confirmations c ON s.user_id = c.user_id
-GROUP BY 
-    s.user_id;
+
+select s.user_id ,   
+COALESCE(
+  round(
+    (  select count(c2.user_id)
+        from Confirmations c2
+        where c2.user_id = s.user_id and c2.action = 'confirmed'
+    )
+    /
+    (   select count(c.user_id)
+        from Confirmations c
+        where c.user_id = s.user_id
+    ) ,2 ) , 0.00)as confirmation_rate 
+    
+from Signups s;
