@@ -12,21 +12,27 @@
 class Solution {
 public:
 
-    TreeNode* bst(vector<int>pre ,  int& indx ,int low ,int high)
-    {
-        
-        if(indx >= pre.size() )return nullptr;
-        int val = pre[indx];
-        if(val < low || val > high)return nullptr;
-         indx+=1;
-        TreeNode* root = new TreeNode(val);
-        root->left = bst(pre,indx,low,root->val);
-        root->right = bst(pre,indx,root->val,high);
+    TreeNode* insert(int x,TreeNode* root){
+
+        if(root == nullptr){
+            TreeNode* newNode = new TreeNode(x);
+            return newNode;
+        }
+
+        if(root->val < x){
+            root->right = insert(x,root->right);
+        }else{
+            root->left = insert(x,root->left);
+        }
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
+        if(preorder.size() == 0)return nullptr;
 
-        int indx =0;
-        return bst(preorder,indx,INT_MIN,INT_MAX);
+        TreeNode* root = new TreeNode(preorder[0]);
+        for(int i=1;i<preorder.size();i++){
+            root = insert(preorder[i],root);
+        }
+        return root;
     }
 };
