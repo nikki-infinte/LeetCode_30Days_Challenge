@@ -12,27 +12,19 @@
 class Solution {
 public:
 
-    TreeNode* insert(int x,TreeNode* root){
+    TreeNode* solve(int& indx,int ub,vector<int>& preorder){
 
-        if(root == nullptr){
-            TreeNode* newNode = new TreeNode(x);
-            return newNode;
+        if(indx == preorder.size() || preorder[indx] >ub){
+            return nullptr;
         }
 
-        if(root->val < x){
-            root->right = insert(x,root->right);
-        }else{
-            root->left = insert(x,root->left);
-        }
+        TreeNode* root = new TreeNode(preorder[indx++]);
+        root->left = solve(indx,root->val,preorder);
+        root->right = solve(indx,ub,preorder);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        if(preorder.size() == 0)return nullptr;
-
-        TreeNode* root = new TreeNode(preorder[0]);
-        for(int i=1;i<preorder.size();i++){
-            root = insert(preorder[i],root);
-        }
-        return root;
+        int indx =0;
+     return solve(indx,INT_MAX,preorder);   
     }
 };
