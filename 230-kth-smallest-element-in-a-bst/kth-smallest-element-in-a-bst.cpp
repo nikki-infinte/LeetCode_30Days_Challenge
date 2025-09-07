@@ -6,31 +6,20 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
 public:
-    void solve(TreeNode* root, int &k, int& ans) {
-        if (root == nullptr)
-            return;
-
-        solve(root->left, k, ans);
-
-        k--;
-        if (k == 0) {
-            ans = root->val;
-            return;
-        }
-
-        solve(root->right, k, ans);
-    }
+    int order = 0;
 
     int kthSmallest(TreeNode* root, int k) {
-        int ans;
-        solve(root, k, ans);
-
-        return ans;
+        if(root == nullptr)return -1;
+        int ans = kthSmallest(root->left,k);
+        if(ans != -1)return ans;
+        order++;
+        if(order == k)return root->val;
+        return kthSmallest(root->right,k);
+         
     }
 };
