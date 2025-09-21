@@ -1,24 +1,26 @@
 class Solution {
 public:
- vector<vector<int>>ans;
-   void unclear(vector<int>&nums,int index)
-   {
-    if(index==nums.size())
-    {
-        ans.push_back(nums);
-        return ;
-    }
+    int n ;
+    void solve(int indx, vector<int>&tmp,vector<vector<int>>&ans){
 
-        for(int i=index;i<nums.size();i++)
-        {
-            swap(nums[index],nums[i]);
-            unclear(nums,index+1);
-            swap(nums[index],nums[i]);
+        //base case 
+        if(indx >= n){
+            ans.push_back(tmp);
+            return ;
         }
 
+        for(int j=indx;j<n;j++){
+            swap(tmp[j],tmp[indx]);
+            solve(indx+1,tmp,ans);
+            swap(tmp[j],tmp[indx]);
+        }
     }
+
     vector<vector<int>> permute(vector<int>& nums) {
-       unclear(nums,0);
-       return ans;
+        n = nums.size();
+        vector<vector<int>>ans;
+        vector<int>tmp=nums;
+        solve(0,tmp,ans);
+        return ans;
     }
 };
