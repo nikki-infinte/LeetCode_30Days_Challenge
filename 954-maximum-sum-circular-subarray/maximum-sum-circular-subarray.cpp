@@ -1,45 +1,39 @@
 class Solution {
 public:
 
-    int minSum(vector<int>&vec)
-    {
-        int sum=0;
-        int n=vec.size();
-        int mnsum = INT_MAX;
+    int minSumSubarray(vector<int>&nums){
+        int n = nums.size();
 
-        for(int i=0;i<n;i++)
-        {
-            sum=min(vec[i],sum+vec[i]);
-            mnsum = min(mnsum,sum);
-
+        int sum = nums[0];
+        int minSum = nums[0];
+        for(int i=1;i<n;i++){
+            
+            sum = min(nums[i],sum+nums[i]);
+            minSum = min(minSum,sum);
         }
-        return mnsum;
+        return minSum;
     }
+    int maxSumSubarray(vector<int>&nums){
+        int n = nums.size();
 
-    int maxSum(vector<int>&vec)
-    {
-         int sum=0;
-        int n=vec.size();
-        int mnsum = INT_MIN;
-
-        for(int i=0;i<n;i++)
-        {
-            sum=max(vec[i],sum+vec[i]);
-            mnsum = max(mnsum,sum);
-
+        int sum = nums[0];
+        int minSum = nums[0];
+        for(int i=1;i<n;i++){
+            
+            sum = max(nums[i],sum+nums[i]);
+            minSum = max(minSum,sum);
         }
-        return mnsum;
+        return minSum;
     }
     int maxSubarraySumCircular(vector<int>& nums) {
         
-        int total_sum=accumulate(nums.begin(),nums.end(),0);
+        int total = accumulate(nums.begin(),nums.end(),0);
+        int maxsum = maxSumSubarray(nums);
+        int minsum = minSumSubarray(nums);
 
-        int mnSum =minSum(nums);
-        int mxSum =maxSum(nums);
-
-        int circular =total_sum -mnSum;
-
-        if(mxSum > 0)return max(mxSum,circular);
-        return mxSum;
+        if(maxsum > 0){
+            return max(maxsum, total - minsum);
+        }
+        return maxsum;
     }
 };
