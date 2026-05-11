@@ -1,29 +1,16 @@
 class Solution {
 public:
-
-    void separateNumber(vector<int>&separateArr, int num){
-        stack<int>st;
-        while(num > 0){
-            st.push(num%10);
-            num/=10;
-        }
-        while(!st.empty()){
-            separateArr.push_back(st.top());
-            st.pop();
-        }
-        
-    }
     vector<int> separateDigits(vector<int>& nums) {
-        vector<int>separateArr;
+        vector<int>ans;
+
         for(int i=0;i<nums.size();i++){
 
-            int num = nums[i];
-            if(num <= 9){
-                separateArr.push_back(num);
-            }else{
-                separateNumber(separateArr,num);
+           string num = to_string(nums[i]);
+            for(auto &a:num){
+                ans.push_back(a-'0');
             }
+        
         }
-        return separateArr;
+        return ans;
     }
 };
